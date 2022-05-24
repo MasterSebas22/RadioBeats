@@ -15,6 +15,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author Bryan Baron
+ * @author Juan Avila
+ * @author Juan Tarazona
+ * @author Sebastian Carrera
+ *
+ * @version 1.0
+ *
+ */
 public class PlayListCreator extends JPanel {
 
     private JLabel playListCreatorTittleLabel;
@@ -26,10 +36,16 @@ public class PlayListCreator extends JPanel {
     private JScrollPane soundListScrollView;
     private JButton acceptButton;
 
+    /**
+     * Creates new form PlayListCreator
+     */
     public PlayListCreator() {
         initComponents();
     }
 
+    /**
+     * Initalizes the JPanel components
+     */
     private void initComponents() {
         playListCreatorTittleLabel = new JLabel();
         playListNameLabel = new JLabel();
@@ -41,7 +57,7 @@ public class PlayListCreator extends JPanel {
         acceptButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(520, 460)); //Frame size 520x460
+        setSize(new Dimension(520, 460));
         setPreferredSize(new Dimension(520, 460));
 
         playListCreatorTittleLabel.setFont(new Font("sansserif", 0, 24));

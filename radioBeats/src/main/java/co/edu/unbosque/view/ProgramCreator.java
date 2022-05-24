@@ -14,6 +14,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author Bryan Baron
+ * @author Juan Avila
+ * @author Juan Tarazona
+ * @author Sebastian Carrera
+ *
+ * @version 1.0
+ *
+ */
 public class ProgramCreator extends JPanel {
 
     private JLabel createProgramTittleLabel;
@@ -24,10 +34,16 @@ public class ProgramCreator extends JPanel {
     private JTable playListsList;
     private JButton acceptButton;
 
+    /**
+     * Creates new form ProgramCreator
+     */
     public ProgramCreator() {
         initComponents();
     }
 
+    /**
+     * Initalizes the JPanel components
+     */
     private void initComponents() {
         createProgramTittleLabel = new JLabel();
         stationSelectorLabel = new JLabel();

@@ -13,6 +13,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ *
+ * @author Bryan Baron
+ * @author Juan Avila
+ * @author Juan Tarazona
+ * @author Sebastian Carrera
+ *
+ * @version 1.0
+ *
+ */
 public class StationCreator extends JPanel {
 
     private JLabel stationCreationTittleLabel;
@@ -24,10 +34,16 @@ public class StationCreator extends JPanel {
     private JComboBox<String> transmistionModeOptions;
     private JButton acceptButton;
 
+    /**
+     * Creates new form StationCreator
+     */
     public StationCreator() {
         initComponents();
     }
 
+    /**
+     * Initalizes the jFrame components
+     */
     private void initComponents() {
         stationCreationTittleLabel = new JLabel();
         stationNameLabel = new JLabel();

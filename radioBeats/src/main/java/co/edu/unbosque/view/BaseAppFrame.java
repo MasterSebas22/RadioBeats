@@ -1,29 +1,58 @@
 package co.edu.unbosque.view;
 
-import java.awt.Dimension;
+import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.GroupLayout;
-import javax.swing.JMenu;
+import javax.swing.JButton;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  *
- * @author mrfixthis
+ * @author Bryan Baron
+ * @author Juan Avila
+ * @author Juan Tarazona
+ * @author Sebastian Carrera
  *
  * @version 1.0
  *
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class BaseAppFrame extends javax.swing.JFrame {
 
+    private static BaseAppFrame baseAppFrame;
+    static {
+        setFrameLookAndFeel();
+        baseAppFrame = new BaseAppFrame();
+    }
+    private GroupLayout baseFrameLayout;
     private JMenuBar baseFrameMenuBar;
-    private JMenu closeAppOption;
-    private JMenu importSoundOption;
+    private JButton closeAppOption;
+    private JButton importSoundOption;
+    private static JPanel baseAppFramePanel;
+    private static MainMenu mainMenu;
+    private static StationCreator stationCreator;
+    private static PlayListCreator playListCreator;
+    private static StationList stationList;
+    private static ProgramCreator programCreator;
+    private static ProgramReproductor programReproductor;
+    private static int startupConfirmation;
 
     /**
      * Creates new form BaseAppFrame
      */
-    public BaseAppFrame() {
+    private BaseAppFrame() {
         initComponents();
     }
 
@@ -31,67 +60,135 @@ public class BaseAppFrame extends javax.swing.JFrame {
      * Initalizes the jFrame components
      */
     private void initComponents() {
+        baseFrameLayout = new GroupLayout(getContentPane());
         baseFrameMenuBar = new JMenuBar();
-        importSoundOption = new JMenu();
-        closeAppOption = new JMenu();
+        importSoundOption = new JButton();
+        closeAppOption = new JButton();
+        baseAppFramePanel = null;
+        mainMenu = new MainMenu();
+        stationCreator = new StationCreator();
+        playListCreator = new PlayListCreator();
+        stationList = new StationList();
+        programCreator = new ProgramCreator();
+        programReproductor = new ProgramReproductor();
+        startupConfirmation = 0;
 
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setTitle("RadioBeats");
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
-        setSize(new Dimension(515, 442));
+        setPreferredSize(mainMenu.getSize());
 
         importSoundOption.setText("Importar");
+        importSoundOption.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        importSoundOption.setFocusPainted(false);
+        importSoundOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                //TODO: MAKE THE IMPORT FRAME AND CALL HERE
+            }
+        });
         baseFrameMenuBar.add(importSoundOption);
 
         closeAppOption.setText("Salir");
+        closeAppOption.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        closeAppOption.setFocusPainted(false);
+        closeAppOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                System.exit(0);
+            }
+        });
         baseFrameMenuBar.add(closeAppOption);
 
         setJMenuBar(baseFrameMenuBar);
 
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 515, Short.MAX_VALUE)
+        if(startupConfirmation == 0) baseAppFramePanel = mainMenu;
+
+        getContentPane().setLayout(baseFrameLayout);
+        baseFrameLayout.setHorizontalGroup(
+            baseFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(baseAppFramePanel, GroupLayout.DEFAULT_SIZE,
+                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGap(0, 518, Short.MAX_VALUE)
+        baseFrameLayout.setVerticalGroup(
+            baseFrameLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(baseAppFramePanel, GroupLayout.DEFAULT_SIZE,
+                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         pack();
+        setLocationRelativeTo(null);
     }
 
     /**
-     * @param args the command line arguments
+     * Retrives the singleton BaseAppFrame instance
+     *
+     * @return the BaseAppFrame singleton instance
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    public static BaseAppFrame getSingletonInstance() {
+        return baseAppFrame;
+    }
+
+    /**
+     * Reloads the whole frame's components and general look
+     *
+     * @param panelOption the replacing JFrame panel option
+     */
+    public static void reloadFrameContent(int panelOption) {
+        startupConfirmation = startupConfirmation == 0 ? 1 : 1;
+        baseAppFrame.remove(baseAppFramePanel);
+
+        switch(panelOption) {
+            case 1:
+                baseAppFramePanel = stationCreator;
+                break;
+            case 2:
+                baseAppFramePanel = playListCreator;
+                break;
+            case 3:
+                baseAppFramePanel = stationList;
+                break;
+            case 4:
+                baseAppFramePanel = programCreator;
+                break;
+            case 5:
+                baseAppFramePanel = programReproductor;
+                break;
+            default:
+                baseAppFramePanel = mainMenu;
+                break;
+        }
+
+        baseAppFrame.add(baseAppFramePanel);
+        baseAppFrame.setSize(baseAppFramePanel.getSize());
+        baseAppFrame.setPreferredSize(baseAppFramePanel.getSize());
+        baseAppFrame.repaint();
+        baseAppFrame.setLocationRelativeTo(null);
+    }
+
+    /**
+     * Loads and sets the global JFrame look and feel
+     */
+    private static void setFrameLookAndFeel() {
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BaseAppFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(BaseAppFrame.class.getName())
+                .log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BaseAppFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(BaseAppFrame.class.getName())
+                .log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BaseAppFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(BaseAppFrame.class.getName())
+                .log(Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BaseAppFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(BaseAppFrame.class.getName())
+                .log(Level.SEVERE, null, ex);
         }
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BaseAppFrame().setVisible(true);
-            }
-        });
     }
 }

@@ -12,6 +12,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ *
+ * @author Bryan Baron
+ * @author Juan Avila
+ * @author Juan Tarazona
+ * @author Sebastian Carrera
+ *
+ * @version 1.0
+ *
+ */
 public class ProgramReproductor extends JPanel {
 
     private JButton backbutton;
@@ -20,12 +30,17 @@ public class ProgramReproductor extends JPanel {
     private JLabel playProgramTittleLabel;
     private JTable programsList;
     private JButton stopButton;
-   //
 
+    /**
+     * Creates new form ProgramReproductor
+     */
     public ProgramReproductor() {
         initComponents();
     }
 
+    /**
+     * Initalizes the JPanel components
+     */
     private void initComponents() {
         playProgramTittleLabel = new JLabel();
         jScrollPane1 = new JScrollPane();

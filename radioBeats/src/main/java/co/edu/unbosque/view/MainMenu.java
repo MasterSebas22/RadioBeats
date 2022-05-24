@@ -1,15 +1,27 @@
 package co.edu.unbosque.view;
 
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.Dimension;
-import java.awt.Cursor;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import co.edu.unbosque.util.StringEncoder;
+
+/**
+ *
+ * @author Bryan Baron
+ * @author Juan Avila
+ * @author Juan Tarazona
+ * @author Sebastian Carrera
+ *
+ * @version 1.0
+ *
+ */
 public class MainMenu extends JPanel {
 
     private JLabel mainMenuTitleLabel;
@@ -19,10 +31,16 @@ public class MainMenu extends JPanel {
     private JButton createProgramButton;
     private JButton playProgramButton;
 
+    /**
+     * Creates new form MainMenu
+     */
     public MainMenu() {
         initComponents();
     }
 
+    /**
+     * Initalizes the JPanel components
+     */
     private void initComponents() {
         mainMenuTitleLabel = new JLabel();
         createStationButton = new JButton();
@@ -32,7 +50,7 @@ public class MainMenu extends JPanel {
         playProgramButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(430, 340)); //Frame size 430x340
+        setSize(new Dimension(430, 340));
         setPreferredSize(new Dimension(430, 340));
 
         mainMenuTitleLabel.setFont(new Font("sansserif", 0, 36));
@@ -46,7 +64,7 @@ public class MainMenu extends JPanel {
         createStationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(1);
             }
         });
         add(createStationButton);
@@ -57,7 +75,7 @@ public class MainMenu extends JPanel {
         createPlayListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(2);
             }
         });
         add(createPlayListButton);
@@ -67,27 +85,29 @@ public class MainMenu extends JPanel {
         seeStationListButton.setBounds(40, 170, 170, 50);
         seeStationListButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(3);
             }
         });
         add(seeStationListButton);
 
-        createProgramButton.setText("Crear Programacion");
+        createProgramButton.setText(StringEncoder
+                .encodeStringUTF8("Crear Programación"));
         createProgramButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         createProgramButton.setBounds(220, 170, 170, 50);
         createProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(4);
             }
         });
         add(createProgramButton);
 
-        playProgramButton.setText("Reproducir Programacion");
+        playProgramButton.setText(StringEncoder
+                .encodeStringUTF8("Reproducir Programación"));
         playProgramButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         playProgramButton.setBounds(120, 230, 200, 50);
         playProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(5);
             }
         });
         add(playProgramButton);
