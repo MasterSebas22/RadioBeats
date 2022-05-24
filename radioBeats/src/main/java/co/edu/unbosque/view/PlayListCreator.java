@@ -23,7 +23,7 @@ public class PlayListCreator extends JPanel {
     private JTextField playListNameField;
     private JComboBox<String> stationOptions;
     private JTable soundsList;
-    private JScrollPane soundListPortView;
+    private JScrollPane soundListScrollView;
     private JButton acceptButton;
 
     public PlayListCreator() {
@@ -36,7 +36,7 @@ public class PlayListCreator extends JPanel {
         stationSelectorLabel = new JLabel();
         playListNameField = new JTextField();
         stationOptions = new JComboBox<>();
-        soundListPortView = new JScrollPane();
+        soundListScrollView = new JScrollPane();
         soundsList = new JTable();
         acceptButton = new JButton();
 
@@ -87,9 +87,9 @@ public class PlayListCreator extends JPanel {
                 "Nombre", "Artista", "Genero"
             }
         ));
-        soundListPortView.setBounds(30, 140, 460, 220);
-        soundListPortView.setViewportView(soundsList);
-        add(soundListPortView);
+        soundListScrollView.setBounds(30, 140, 460, 220);
+        soundListScrollView.setViewportView(soundsList);
+        add(soundListScrollView);
 
         acceptButton.setText("Aceptar");
         acceptButton.setBounds(200, 380, 100, 30);
