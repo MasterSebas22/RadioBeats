@@ -1,5 +1,6 @@
 package co.edu.unbosque.view;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import co.edu.unbosque.util.StringEncoder;
 
 /**
  *
@@ -30,11 +33,15 @@ public class PlayListCreator extends JPanel {
     private JLabel playListCreatorTittleLabel;
     private JLabel playListNameLabel;
     private JLabel stationSelectorLabel;
+    private JLabel generalSongsListLabel;
     private JTextField playListNameField;
     private JComboBox<String> stationOptions;
     private JTable soundsList;
     private JScrollPane soundListScrollView;
     private JButton acceptButton;
+    private JButton backButton;
+    private String playListName;
+    // private Object[][] soundList;
 
     /**
      * Creates new form PlayListCreator
@@ -50,15 +57,17 @@ public class PlayListCreator extends JPanel {
         playListCreatorTittleLabel = new JLabel();
         playListNameLabel = new JLabel();
         stationSelectorLabel = new JLabel();
+        generalSongsListLabel = new JLabel();
         playListNameField = new JTextField();
         stationOptions = new JComboBox<>();
         soundListScrollView = new JScrollPane();
         soundsList = new JTable();
         acceptButton = new JButton();
+        backButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(520, 460));
-        setPreferredSize(new Dimension(520, 460));
+        setSize(new Dimension(520, 470));
+        setPreferredSize(new Dimension(520, 470));
 
         playListCreatorTittleLabel.setFont(new Font("sansserif", 0, 24));
         playListCreatorTittleLabel.setText("Crear PlayList");
@@ -66,14 +75,18 @@ public class PlayListCreator extends JPanel {
         add(playListCreatorTittleLabel);
 
         playListNameLabel.setText("Nombre");
-        playListNameLabel.setBounds(130, 70, 60, 17);
+        playListNameLabel.setBounds(128, 70, 60, 17);
         add(playListNameLabel);
 
         stationSelectorLabel.setText("Emisora");
-        stationSelectorLabel.setBounds(340, 70, 53, 17);
+        stationSelectorLabel.setBounds(338, 70, 53, 17);
         add(stationSelectorLabel);
 
-        playListNameField.setBounds(70, 90, 180, 30);
+        generalSongsListLabel.setText("Lista General de Canciones");
+        generalSongsListLabel.setBounds(178, 132, 270, 17);
+        add(generalSongsListLabel);
+
+        playListNameField.setBounds(68, 90, 180, 30);
         playListNameField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
@@ -81,9 +94,10 @@ public class PlayListCreator extends JPanel {
         });
 
         add(playListNameField);
-        stationOptions.setBounds(280, 90, 180, 30);
+        stationOptions.setBounds(278, 90, 180, 30);
         stationOptions.setModel(new DefaultComboBoxModel<>(
-                    new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }
+                    new String[] { "Emisora 1", "Emisora 2", "Emisora 3",
+                        "Emisora 4" }
                     ));
         stationOptions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -92,6 +106,7 @@ public class PlayListCreator extends JPanel {
         });
         add(stationOptions);
 
+        soundsList.getTableHeader().setEnabled(false);
         soundsList.setModel(new DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -100,20 +115,48 @@ public class PlayListCreator extends JPanel {
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "Artista", "Genero"
+                "#------>*", "Nombre", "Artista",
+                StringEncoder.encodeStringUTF8("Genéro")
             }
-        ));
-        soundListScrollView.setBounds(30, 140, 460, 220);
+        ) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                switch(columnIndex) {
+                    case 0:
+                      return Boolean.class;
+                    default:
+                      return String.class;
+                }
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0;
+            }
+        });
+        soundsList.getColumnModel().getColumn(0).setPreferredWidth(1);
+        soundListScrollView.setBounds(30, 155, 460, 220);
         soundListScrollView.setViewportView(soundsList);
         add(soundListScrollView);
 
         acceptButton.setText("Aceptar");
-        acceptButton.setBounds(200, 380, 100, 30);
+        acceptButton.setBounds(140, 390, 100, 30);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(-1);
+                //TODO: Implement the other part
             }
         });
         add(acceptButton);
+
+        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        backButton.setBounds(280, 390, 100, 30);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                BaseAppFrame.reloadFrameContent(-1);
+            }
+        });
+        add(backButton);
     }
 }

@@ -1,6 +1,7 @@
 package co.edu.unbosque.view;
 
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
@@ -77,6 +78,7 @@ public class BaseAppFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
+        setSize(mainMenu.getSize());
         setPreferredSize(mainMenu.getSize());
 
         importSoundOption.setText("Importar");
@@ -156,6 +158,7 @@ public class BaseAppFrame extends javax.swing.JFrame {
                 break;
             default:
                 baseAppFramePanel = mainMenu;
+                baseAppFramePanel.setSize(new Dimension(430, 340));
                 break;
         }
 

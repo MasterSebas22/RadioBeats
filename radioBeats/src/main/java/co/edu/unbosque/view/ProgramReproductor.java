@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.util.StringEncoder;
+
 /**
  *
  * @author Bryan Baron
@@ -24,8 +26,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ProgramReproductor extends JPanel {
 
-    private JButton backbutton;
-    private JScrollPane jScrollPane1;
+    private JLabel programsListLabel;
+    private JButton backButton;
+    private JScrollPane programsListScrollView;
     private JButton playButton;
     private JLabel playProgramTittleLabel;
     private JTable programsList;
@@ -42,22 +45,30 @@ public class ProgramReproductor extends JPanel {
      * Initalizes the JPanel components
      */
     private void initComponents() {
+        programsListLabel = new JLabel();
         playProgramTittleLabel = new JLabel();
-        jScrollPane1 = new JScrollPane();
+        programsListScrollView = new JScrollPane();
         programsList = new JTable();
         playButton = new JButton();
         stopButton = new JButton();
-        backbutton = new JButton();
+        backButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(515, 542)); //Frame size 515x442
-        setPreferredSize(new Dimension(515, 542));
+        setSize(new Dimension(515, 444));
+        setPreferredSize(new Dimension(515, 444));
 
         playProgramTittleLabel.setFont(new Font("sansserif", 0, 24));
-        playProgramTittleLabel.setText("Reproducir Programacion");
-        playProgramTittleLabel.setBounds(105, 20, 310, 30);
+        playProgramTittleLabel.setText(StringEncoder
+                .encodeStringUTF8("Reproducir Programación"));
+        playProgramTittleLabel.setBounds(113, 20, 310, 30);
         add(playProgramTittleLabel);
 
+        programsListLabel.setText(StringEncoder
+                .encodeStringUTF8("Lista de Programaciones"));
+        programsListLabel.setBounds(184, 60, 180, 30);
+        add(programsListLabel);
+
+        programsList.getTableHeader().setEnabled(false);
         programsList.setModel(new DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -66,15 +77,32 @@ public class ProgramReproductor extends JPanel {
                 {null, null}
             },
             new String [] {
-                "Title 1", "Title 2"
+                "#-------->*", "Nombre",
             }
-        ));
-        jScrollPane1.setBounds(30, 80, 450, 350);
-        jScrollPane1.setViewportView(programsList);
-        add(jScrollPane1);
+        ) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                switch(columnIndex) {
+                    case 0:
+                      return Boolean.class;
+                    default:
+                      return String.class;
+                }
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0;
+            }
+        });
+        programsList.getColumnModel().getColumn(0).setPreferredWidth(1);
+        programsList.getColumnModel().getColumn(1).setPreferredWidth(300);
+        programsListScrollView.setBounds(30, 95, 450, 250);
+        programsListScrollView.setViewportView(programsList);
+        add(programsListScrollView);
 
         playButton.setText("Reproducir");
-        playButton.setBounds(75, 460, 100, 30);
+        playButton.setBounds(75, 362, 100, 30);
         playButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
@@ -83,7 +111,7 @@ public class ProgramReproductor extends JPanel {
         add(playButton);
 
         stopButton.setText("Detener");
-        stopButton.setBounds(205, 460, 100, 30);
+        stopButton.setBounds(205, 362, 100, 30);
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
@@ -91,13 +119,13 @@ public class ProgramReproductor extends JPanel {
         });
         add(stopButton);
 
-        backbutton.setText("Atras");
-        backbutton.setBounds(335, 460, 100, 30);
-        backbutton.addActionListener(new ActionListener() {
+        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setBounds(335, 362, 100, 30);
+        backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(-1);
             }
         });
-        add(backbutton);
+        add(backButton);
     }
 }

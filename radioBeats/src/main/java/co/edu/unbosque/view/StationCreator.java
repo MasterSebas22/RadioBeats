@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import co.edu.unbosque.util.StringEncoder;
+
 /**
  *
  * @author Bryan Baron
@@ -33,6 +35,7 @@ public class StationCreator extends JPanel {
     private JComboBox<String> stationMusicGenOptions;
     private JComboBox<String> transmistionModeOptions;
     private JButton acceptButton;
+    private JButton backButton;
 
     /**
      * Creates new form StationCreator
@@ -53,10 +56,11 @@ public class StationCreator extends JPanel {
         transmistionModeOptions = new JComboBox<>();
         stationMusicGenOptions = new JComboBox<>();
         acceptButton = new JButton();
+        backButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(430, 290)); //Frame size 430x290
-        setPreferredSize(new Dimension(430, 290));
+        setSize(new Dimension(433, 300));
+        setPreferredSize(new Dimension(433, 300));
 
         stationCreationTittleLabel.setFont(new Font("sansserif", 0, 24));
         stationCreationTittleLabel.setText("Crear Emisora");
@@ -64,21 +68,22 @@ public class StationCreator extends JPanel {
         add(stationCreationTittleLabel);
 
         stationNameLabel.setText("Nombre");
-        stationNameLabel.setBounds(90, 80, 60, 17);
+        stationNameLabel.setBounds(95, 80, 60, 17);
         add(stationNameLabel);
 
-        stationTransmitionLabel.setText("Modo de transmision");
+        stationTransmitionLabel.setText(StringEncoder
+                .encodeStringUTF8("Modo de transmisión"));
         stationTransmitionLabel.setBounds(240, 80, 140, 17);
         add(stationTransmitionLabel);
 
-        stationMusicGenLabel.setText("Genero");
+        stationMusicGenLabel.setText(StringEncoder.encodeStringUTF8("Género"));
         stationMusicGenLabel.setBounds(190, 140, 50, 17);
         add(stationMusicGenLabel);
 
         transmistionModeOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
         transmistionModeOptions.setBounds(220, 100, 170, 30);
         transmistionModeOptions.setModel(new DefaultComboBoxModel<>(
-                    new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }
+                    new String[] { "AM", "FM", "Streaming" }
                     ));
         transmistionModeOptions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -99,7 +104,9 @@ public class StationCreator extends JPanel {
         stationMusicGenOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationMusicGenOptions.setBounds(126, 160, 180, 30);
         stationMusicGenOptions.setModel(new DefaultComboBoxModel<>(
-                    new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }
+                    new String[] {
+                        "Rock/Metal", "HipHop/Rap", "Pop", "Reaggeton",
+                        "Vallenato", "Reagge", "Salsa/Merengue", "Otro" }
                     ));
         stationMusicGenOptions.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -110,12 +117,23 @@ public class StationCreator extends JPanel {
 
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        acceptButton.setBounds(168, 220, 100, 30);
+        acceptButton.setBounds(102, 217, 100, 30);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(-1);
+                //TODO: Implement the other part
             }
         });
         add(acceptButton);
+
+        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        backButton.setBounds(230, 217, 100, 30);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                BaseAppFrame.reloadFrameContent(-1);
+            }
+        });
+        add(backButton);
     }
 }

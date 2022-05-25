@@ -1,5 +1,6 @@
 package co.edu.unbosque.view;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import co.edu.unbosque.util.StringEncoder;
 
 /**
  *
@@ -33,6 +36,7 @@ public class ProgramCreator extends JPanel {
     private JScrollPane playListListScrollView;
     private JTable playListsList;
     private JButton acceptButton;
+    private JButton backButton;
 
     /**
      * Creates new form ProgramCreator
@@ -52,24 +56,40 @@ public class ProgramCreator extends JPanel {
         playListListScrollView = new JScrollPane();
         playListsList = new JTable();
         acceptButton = new JButton();
+        backButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(515, 555)); //Frame size 515x555
-        setPreferredSize(new Dimension(515, 555));
+        setSize(new Dimension(515, 510));
+        setPreferredSize(new Dimension(515, 510));
 
         createProgramTittleLabel.setFont(new Font("sansserif", 0, 24));
-        createProgramTittleLabel.setText("Crear Programacion");
-        createProgramTittleLabel.setBounds(140, 20, 250, 29);
+        createProgramTittleLabel.setText(StringEncoder
+                .encodeStringUTF8("Crear Programación"));
+        createProgramTittleLabel.setBounds(144, 20, 250, 29);
         add(createProgramTittleLabel);
 
         stationSelectorLabel.setText("Emisora");
-        stationSelectorLabel.setBounds(228, 74, 60, 17);
+        stationSelectorLabel.setBounds(236, 74, 60, 17);
         add(stationSelectorLabel);
 
         playListsListLabel.setText("Lista de PlayLists");
-        playListsListLabel.setBounds(200, 150, 120, 17);
+        playListsListLabel.setBounds(208, 145, 120, 17);
         add(playListsListLabel);
 
+        stationSelector.setModel(new DefaultComboBoxModel<>(
+                    new String[] { "Emisora 1", "Emisora 2", "Emisora 3",
+                        "Emisora 4" }
+                    ));
+        stationSelector.setBounds(140, 96, 240, 30);
+        stationSelector.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                //
+            }
+        });
+        add(stationSelector);
+
+
+        playListsList.getTableHeader().setEnabled(false);
         playListsList.setModel(new DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -78,31 +98,49 @@ public class ProgramCreator extends JPanel {
                 {null, null}
             },
             new String [] {
-                "Title 1", "Title 2"
+                "#-------->*", "Nombre",
             }
-        ));
-        playListListScrollView.setBounds(30, 180, 450, 280);
+        ) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                switch(columnIndex) {
+                    case 0:
+                      return Boolean.class;
+                    default:
+                      return String.class;
+                }
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0;
+            }
+        });
+        playListsList.getColumnModel().getColumn(0).setPreferredWidth(1);
+        playListsList.getColumnModel().getColumn(1).setPreferredWidth(300);
+        // playListsList.getColumnModel().getColumn(0).setPreferredWidth(1);
+        playListListScrollView.setBounds(34, 171, 450, 240);
         playListListScrollView.setViewportView(playListsList);
         add(playListListScrollView);
 
-        stationSelector.setModel(new DefaultComboBoxModel<>(
-                    new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }
-                    ));
-        stationSelector.setBounds(140, 100, 240, 30);
-        stationSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
-            }
-        });
-        add(stationSelector);
-
         acceptButton.setText("Aceptar");
-        acceptButton.setBounds(200, 480, 100, 30);
+        acceptButton.setBounds(144, 430, 100, 30);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(-1);
+                //TODO: Implement the other part
             }
         });
         add(acceptButton);
+
+        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        backButton.setBounds(280, 430, 100, 30);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                BaseAppFrame.reloadFrameContent(-1);
+            }
+        });
+        add(backButton);
     }
 }

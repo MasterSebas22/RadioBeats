@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.util.StringEncoder;
+
 /**
  *
  * @author Bryan Baron
@@ -50,7 +52,7 @@ public class StationList extends JPanel {
         backButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(515, 440)); //Frame size 515x440
+        setSize(new Dimension(515, 440));
         setPreferredSize(new Dimension(515, 440));
 
         stationsListTittleLabel.setFont(new Font("sansserif", 0, 24));
@@ -58,6 +60,7 @@ public class StationList extends JPanel {
         stationsListTittleLabel.setBounds(150, 20, 220, 30);
         add(stationsListTittleLabel);
 
+        stationsList.getTableHeader().setEnabled(false);
         stationsList.setModel(new DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -66,15 +69,22 @@ public class StationList extends JPanel {
                 {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3"
+                "Nombre",
+                StringEncoder.encodeStringUTF8("Modo de Transmisión"),
+                StringEncoder.encodeStringUTF8("Genéro")
             }
-        ));
-        stationsListScrollView.setBounds(30, 70, 452, 270);
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+        stationsListScrollView.setBounds(32, 70, 452, 270);
         stationsListScrollView.setViewportView(stationsList);
         add(stationsListScrollView);
 
         editStationButton.setText("Editar Emisora");
-        editStationButton.setBounds(40, 360, 150, 30);
+        editStationButton.setBounds(40, 357, 150, 30);
         editStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
@@ -83,7 +93,7 @@ public class StationList extends JPanel {
         add(editStationButton);
 
         deleteStationButton.setText("Eliminar Emisora");
-        deleteStationButton.setBounds(210, 360, 150, 30);
+        deleteStationButton.setBounds(210, 357, 150, 30);
         deleteStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
@@ -91,11 +101,12 @@ public class StationList extends JPanel {
         });
         add(deleteStationButton);
 
-        backButton.setText("Atras");
-        backButton.setBounds(380, 360, 95, 30);
+        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setBounds(380, 357, 95, 30);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                BaseAppFrame.reloadFrameContent(-1);
+                //TODO: Implement the other part
             }
         });
         add(backButton);
