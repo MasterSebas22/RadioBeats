@@ -1,5 +1,6 @@
 package co.edu.unbosque.view;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -97,11 +98,13 @@ public class ProgramReproductor extends JPanel {
         });
         programsList.getColumnModel().getColumn(0).setPreferredWidth(1);
         programsList.getColumnModel().getColumn(1).setPreferredWidth(300);
+        programsListScrollView.setCursor(new Cursor(Cursor.HAND_CURSOR));
         programsListScrollView.setBounds(30, 95, 450, 250);
         programsListScrollView.setViewportView(programsList);
         add(programsListScrollView);
 
         playButton.setText("Reproducir");
+        playButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         playButton.setBounds(75, 362, 100, 30);
         playButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -111,6 +114,7 @@ public class ProgramReproductor extends JPanel {
         add(playButton);
 
         stopButton.setText("Detener");
+        stopButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stopButton.setBounds(205, 362, 100, 30);
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -120,6 +124,7 @@ public class ProgramReproductor extends JPanel {
         add(stopButton);
 
         backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBounds(335, 362, 100, 30);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {

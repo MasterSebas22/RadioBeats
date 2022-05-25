@@ -9,14 +9,12 @@ import java.util.logging.Logger;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  *
@@ -28,9 +26,7 @@ import lombok.EqualsAndHashCode;
  * @version 1.0
  *
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-public class BaseAppFrame extends javax.swing.JFrame {
+public class BaseAppFrame extends JFrame {
 
     private static BaseAppFrame baseAppFrame;
     static {
@@ -38,9 +34,9 @@ public class BaseAppFrame extends javax.swing.JFrame {
         baseAppFrame = new BaseAppFrame();
     }
     private GroupLayout baseFrameLayout;
-    private JMenuBar baseFrameMenuBar;
     private JButton closeAppOption;
     private JButton importSoundOption;
+    private static JMenuBar baseFrameMenuBar;
     private static JPanel baseAppFramePanel;
     private static MainMenu mainMenu;
     private static StationCreator stationCreator;
@@ -48,6 +44,8 @@ public class BaseAppFrame extends javax.swing.JFrame {
     private static StationList stationList;
     private static ProgramCreator programCreator;
     private static ProgramReproductor programReproductor;
+    private static SongImporter songImporter;
+    private static FileChooser fileChooser;
     private static int startupConfirmation;
 
     /**
@@ -72,6 +70,8 @@ public class BaseAppFrame extends javax.swing.JFrame {
         stationList = new StationList();
         programCreator = new ProgramCreator();
         programReproductor = new ProgramReproductor();
+        songImporter = new SongImporter();
+        fileChooser = new FileChooser();
         startupConfirmation = 0;
 
         setTitle("RadioBeats");
@@ -87,7 +87,7 @@ public class BaseAppFrame extends javax.swing.JFrame {
         importSoundOption.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //TODO: MAKE THE IMPORT FRAME AND CALL HERE
+                reloadFrameContent(6);
             }
         });
         baseFrameMenuBar.add(importSoundOption);
@@ -156,6 +156,12 @@ public class BaseAppFrame extends javax.swing.JFrame {
             case 5:
                 baseAppFramePanel = programReproductor;
                 break;
+            case 6:
+                baseAppFramePanel = songImporter;
+                break;
+            case 7:
+                baseAppFramePanel = fileChooser;
+                break;
             default:
                 baseAppFramePanel = mainMenu;
                 baseAppFramePanel.setSize(new Dimension(430, 340));
@@ -167,6 +173,9 @@ public class BaseAppFrame extends javax.swing.JFrame {
         baseAppFrame.setPreferredSize(baseAppFramePanel.getSize());
         baseAppFrame.repaint();
         baseAppFrame.setLocationRelativeTo(null);
+        baseFrameMenuBar
+                .getComponent(0).setEnabled(
+                        baseAppFramePanel.equals(mainMenu) ? true : false);
     }
 
     /**

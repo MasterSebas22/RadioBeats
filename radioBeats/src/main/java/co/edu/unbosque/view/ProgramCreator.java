@@ -76,6 +76,7 @@ public class ProgramCreator extends JPanel {
         playListsListLabel.setBounds(208, 145, 120, 17);
         add(playListsListLabel);
 
+        stationSelector.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationSelector.setModel(new DefaultComboBoxModel<>(
                     new String[] { "Emisora 1", "Emisora 2", "Emisora 3",
                         "Emisora 4" }
@@ -87,7 +88,6 @@ public class ProgramCreator extends JPanel {
             }
         });
         add(stationSelector);
-
 
         playListsList.getTableHeader().setEnabled(false);
         playListsList.setModel(new DefaultTableModel(
@@ -118,12 +118,13 @@ public class ProgramCreator extends JPanel {
         });
         playListsList.getColumnModel().getColumn(0).setPreferredWidth(1);
         playListsList.getColumnModel().getColumn(1).setPreferredWidth(300);
-        // playListsList.getColumnModel().getColumn(0).setPreferredWidth(1);
+        playListsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
         playListListScrollView.setBounds(34, 171, 450, 240);
         playListListScrollView.setViewportView(playListsList);
         add(playListListScrollView);
 
         acceptButton.setText("Aceptar");
+        acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         acceptButton.setBounds(144, 430, 100, 30);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {

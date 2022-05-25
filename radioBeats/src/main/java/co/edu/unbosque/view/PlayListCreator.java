@@ -86,6 +86,7 @@ public class PlayListCreator extends JPanel {
         generalSongsListLabel.setBounds(178, 132, 270, 17);
         add(generalSongsListLabel);
 
+        playListNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         playListNameField.setBounds(68, 90, 180, 30);
         playListNameField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -94,6 +95,8 @@ public class PlayListCreator extends JPanel {
         });
 
         add(playListNameField);
+
+        stationOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationOptions.setBounds(278, 90, 180, 30);
         stationOptions.setModel(new DefaultComboBoxModel<>(
                     new String[] { "Emisora 1", "Emisora 2", "Emisora 3",
@@ -135,11 +138,13 @@ public class PlayListCreator extends JPanel {
             }
         });
         soundsList.getColumnModel().getColumn(0).setPreferredWidth(1);
+        soundListScrollView.setCursor(new Cursor(Cursor.HAND_CURSOR));
         soundListScrollView.setBounds(30, 155, 460, 220);
         soundListScrollView.setViewportView(soundsList);
         add(soundListScrollView);
 
         acceptButton.setText("Aceptar");
+        acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         acceptButton.setBounds(140, 390, 100, 30);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {

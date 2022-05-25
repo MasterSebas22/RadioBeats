@@ -1,10 +1,10 @@
 package co.edu.unbosque.view;
 
-import java.awt.Dimension;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
 import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -72,7 +72,7 @@ public class StationCreator extends JPanel {
         add(stationNameLabel);
 
         stationTransmitionLabel.setText(StringEncoder
-                .encodeStringUTF8("Modo de transmisión"));
+                .encodeStringUTF8("Modo de Transmisión"));
         stationTransmitionLabel.setBounds(240, 80, 140, 17);
         add(stationTransmitionLabel);
 
@@ -92,7 +92,7 @@ public class StationCreator extends JPanel {
         });
         add(transmistionModeOptions);
 
-        stationNameField.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        stationNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         stationNameField.setBounds(40, 100, 170, 30);
         stationNameField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {

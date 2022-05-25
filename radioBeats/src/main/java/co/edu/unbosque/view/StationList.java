@@ -1,5 +1,6 @@
 package co.edu.unbosque.view;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -80,10 +81,12 @@ public class StationList extends JPanel {
             }
         });
         stationsListScrollView.setBounds(32, 70, 452, 270);
+        stationsListScrollView.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationsListScrollView.setViewportView(stationsList);
         add(stationsListScrollView);
 
         editStationButton.setText("Editar Emisora");
+        editStationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         editStationButton.setBounds(40, 357, 150, 30);
         editStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -93,6 +96,7 @@ public class StationList extends JPanel {
         add(editStationButton);
 
         deleteStationButton.setText("Eliminar Emisora");
+        deleteStationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         deleteStationButton.setBounds(210, 357, 150, 30);
         deleteStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -102,6 +106,7 @@ public class StationList extends JPanel {
         add(deleteStationButton);
 
         backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBounds(380, 357, 95, 30);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
