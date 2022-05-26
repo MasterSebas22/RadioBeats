@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -80,14 +82,27 @@ public class StationList extends JPanel {
                 return false;
             }
         });
+        stationsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        stationsList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(stationsList.getSelectedRow() == -1) {
+                    editStationButton.setEnabled(false);
+                    deleteStationButton.setEnabled(false);
+                } else {
+                    editStationButton.setEnabled(true);
+                    deleteStationButton.setEnabled(true);
+                }
+            }
+        });
         stationsListScrollView.setBounds(32, 70, 452, 270);
-        stationsListScrollView.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationsListScrollView.setViewportView(stationsList);
         add(stationsListScrollView);
 
         editStationButton.setText("Editar Emisora");
         editStationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         editStationButton.setBounds(40, 357, 150, 30);
+        editStationButton.setEnabled(false);
         editStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
@@ -98,6 +113,7 @@ public class StationList extends JPanel {
         deleteStationButton.setText("Eliminar Emisora");
         deleteStationButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         deleteStationButton.setBounds(210, 357, 150, 30);
+        deleteStationButton.setEnabled(false);
         deleteStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //

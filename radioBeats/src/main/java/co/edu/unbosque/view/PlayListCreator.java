@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -14,8 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -28,7 +33,8 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class PlayListCreator extends JPanel {
+public class PlayListCreator extends JPanel
+    implements GraphicalComponentsTools {
 
     private JLabel playListCreatorTittleLabel;
     private JLabel playListNameLabel;
@@ -37,7 +43,7 @@ public class PlayListCreator extends JPanel {
     private JTextField playListNameField;
     private JComboBox<String> stationOptions;
     private JTable soundsList;
-    private JScrollPane soundListScrollView;
+    private JScrollPane soundsListScrollView;
     private JButton acceptButton;
     private JButton backButton;
     private String playListName;
@@ -60,7 +66,7 @@ public class PlayListCreator extends JPanel {
         generalSongsListLabel = new JLabel();
         playListNameField = new JTextField();
         stationOptions = new JComboBox<>();
-        soundListScrollView = new JScrollPane();
+        soundsListScrollView = new JScrollPane();
         soundsList = new JTable();
         acceptButton = new JButton();
         backButton = new JButton();
@@ -88,10 +94,22 @@ public class PlayListCreator extends JPanel {
 
         playListNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         playListNameField.setBounds(68, 90, 180, 30);
-        playListNameField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
+        playListNameField.getDocument().addDocumentListener(
+                new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        playListNameField, soundsList);
             }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        playListNameField, soundsList);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
         });
 
         add(playListNameField);
@@ -138,14 +156,22 @@ public class PlayListCreator extends JPanel {
             }
         });
         soundsList.getColumnModel().getColumn(0).setPreferredWidth(1);
-        soundListScrollView.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        soundListScrollView.setBounds(30, 155, 460, 220);
-        soundListScrollView.setViewportView(soundsList);
-        add(soundListScrollView);
+        soundsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        soundsList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        playListNameField, soundsList);
+            }
+        });
+        soundsListScrollView.setBounds(30, 155, 460, 220);
+        soundsListScrollView.setViewportView(soundsList);
+        add(soundsListScrollView);
 
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         acceptButton.setBounds(140, 390, 100, 30);
+        acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
@@ -154,7 +180,7 @@ public class PlayListCreator extends JPanel {
         });
         add(acceptButton);
 
-        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setText("Cancelar");
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBounds(280, 390, 100, 30);
         backButton.addActionListener(new ActionListener() {

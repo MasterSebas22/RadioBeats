@@ -82,7 +82,7 @@ public class MainMenu extends JPanel {
 
         seeStationListButton.setText("Lista de Emisoras");
         seeStationListButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        seeStationListButton.setBounds(40, 170, 170, 50);
+        seeStationListButton.setBounds(220, 170, 170, 50);
         seeStationListButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(3);
@@ -93,7 +93,7 @@ public class MainMenu extends JPanel {
         createProgramButton.setText(StringEncoder
                 .encodeStringUTF8("Crear Programación"));
         createProgramButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        createProgramButton.setBounds(220, 170, 170, 50);
+        createProgramButton.setBounds(40, 170, 170, 50);
         createProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(4);

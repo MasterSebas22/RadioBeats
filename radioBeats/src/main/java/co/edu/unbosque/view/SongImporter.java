@@ -12,7 +12,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -25,7 +28,8 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class SongImporter extends JPanel {
+public class SongImporter extends JPanel
+    implements GraphicalComponentsTools {
 
     private JLabel songImporterTittleLabel;
     private JLabel songNameLabel;
@@ -76,11 +80,22 @@ public class SongImporter extends JPanel {
 
         songNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         songNameField.setBounds(50, 100, 140, 30);
-        songGenOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        songNameField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
+        songNameField.getDocument().addDocumentListener(
+                new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        songNameField);
             }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        songNameField);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
         });
         add(songNameField);
 
@@ -92,6 +107,7 @@ public class SongImporter extends JPanel {
                         "Vallenato", "Reagge", "Salsa/Merengue", "Otro" }
                     ));
         songGenOptions.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 //
             }
@@ -102,6 +118,7 @@ public class SongImporter extends JPanel {
         selectFileButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         selectFileButton.setBounds(120, 150, 170, 30);
         selectFileButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(7);
                 //TODO: Implement the other part
@@ -112,7 +129,9 @@ public class SongImporter extends JPanel {
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         acceptButton.setBounds(92, 210, 100, 30);
+        acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
                 //TODO: Implement the other part
@@ -124,6 +143,7 @@ public class SongImporter extends JPanel {
         cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         cancelButton.setBounds(228, 210, 100, 30);
         cancelButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
             }

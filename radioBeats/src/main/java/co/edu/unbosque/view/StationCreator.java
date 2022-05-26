@@ -12,7 +12,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -25,7 +28,8 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class StationCreator extends JPanel {
+public class StationCreator extends JPanel
+    implements GraphicalComponentsTools {
 
     private JLabel stationCreationTittleLabel;
     private JLabel stationNameLabel;
@@ -94,10 +98,22 @@ public class StationCreator extends JPanel {
 
         stationNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         stationNameField.setBounds(40, 100, 170, 30);
-        stationNameField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
+        stationNameField.getDocument().addDocumentListener(
+                new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        stationNameField);
             }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        stationNameField);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
         });
         add(stationNameField);
 
@@ -118,6 +134,7 @@ public class StationCreator extends JPanel {
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         acceptButton.setBounds(102, 217, 100, 30);
+        acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
@@ -126,7 +143,7 @@ public class StationCreator extends JPanel {
         });
         add(acceptButton);
 
-        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setText("Cancelar");
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBounds(230, 217, 100, 30);
         backButton.addActionListener(new ActionListener() {

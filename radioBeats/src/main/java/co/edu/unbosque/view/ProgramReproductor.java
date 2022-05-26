@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -25,7 +28,8 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class ProgramReproductor extends JPanel {
+public class ProgramReproductor extends JPanel
+    implements GraphicalComponentsTools {
 
     private JLabel programsListLabel;
     private JButton backButton;
@@ -98,7 +102,17 @@ public class ProgramReproductor extends JPanel {
         });
         programsList.getColumnModel().getColumn(0).setPreferredWidth(1);
         programsList.getColumnModel().getColumn(1).setPreferredWidth(300);
-        programsListScrollView.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        programsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        programsList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                for(int i = 0; i < 2; i++) {
+                    uptadeLocalComponentEnabledState(
+                            i == 1 ? playButton : stopButton,
+                            programsList);
+                }
+            }
+        });
         programsListScrollView.setBounds(30, 95, 450, 250);
         programsListScrollView.setViewportView(programsList);
         add(programsListScrollView);
@@ -106,6 +120,7 @@ public class ProgramReproductor extends JPanel {
         playButton.setText("Reproducir");
         playButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         playButton.setBounds(75, 362, 100, 30);
+        playButton.setEnabled(false);
         playButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
@@ -116,6 +131,7 @@ public class ProgramReproductor extends JPanel {
         stopButton.setText("Detener");
         stopButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stopButton.setBounds(205, 362, 100, 30);
+        stopButton.setEnabled(false);
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //

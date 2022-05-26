@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -15,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -27,7 +30,8 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class ProgramCreator extends JPanel {
+public class ProgramCreator extends JPanel
+    implements GraphicalComponentsTools {
 
     private JLabel createProgramTittleLabel;
     private JLabel stationSelectorLabel;
@@ -119,6 +123,13 @@ public class ProgramCreator extends JPanel {
         playListsList.getColumnModel().getColumn(0).setPreferredWidth(1);
         playListsList.getColumnModel().getColumn(1).setPreferredWidth(300);
         playListsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        playListsList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        playListsList);
+            }
+        });
         playListListScrollView.setBounds(34, 171, 450, 240);
         playListListScrollView.setViewportView(playListsList);
         add(playListListScrollView);
@@ -126,6 +137,7 @@ public class ProgramCreator extends JPanel {
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         acceptButton.setBounds(144, 430, 100, 30);
+        acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
@@ -134,7 +146,7 @@ public class ProgramCreator extends JPanel {
         });
         add(acceptButton);
 
-        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setText("Cancelar");
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBounds(280, 430, 100, 30);
         backButton.addActionListener(new ActionListener() {
