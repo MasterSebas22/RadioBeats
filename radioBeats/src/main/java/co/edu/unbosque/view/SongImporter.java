@@ -17,6 +17,8 @@ import javax.swing.event.DocumentListener;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -34,10 +36,12 @@ public class SongImporter extends JPanel
     private JLabel songImporterTittleLabel;
     private JLabel songNameLabel;
     private JLabel songGenLabel;
-    private JTextField songNameField;
+    @Setter @Getter
+    private static JTextField songNameField;
     private JComboBox<String> songGenOptions;
     private JButton selectFileButton;
-    private JButton acceptButton;
+    @Setter @Getter
+    private static JButton acceptButton;
     private JButton cancelButton;
 
     /**
@@ -85,13 +89,13 @@ public class SongImporter extends JPanel
             @Override
             public void insertUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
-                        songNameField);
+                        songNameField, BaseAppFrame.getFileSelectedPath());
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
-                        songNameField);
+                        songNameField, BaseAppFrame.getFileSelectedPath());
             }
 
             @Override
@@ -121,6 +125,8 @@ public class SongImporter extends JPanel
             @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(7);
+                if(BaseAppFrame.getFileSelectedPath() != null) {
+                }
                 //TODO: Implement the other part
             }
         });

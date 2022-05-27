@@ -8,8 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.GraphicalComponentsTools;
 
 /**
  *
@@ -21,7 +22,7 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class FileChooser extends JPanel {
+public class FileChooser extends JPanel implements GraphicalComponentsTools {
 
     private JFileChooser fileChooser;
     private JPanel fileChooserPanel;
@@ -47,6 +48,9 @@ public class FileChooser extends JPanel {
         setPreferredSize(new Dimension(514, 346));
 
         fileChooser.setBounds(0, 0, 514, 314);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileFilter(new FileNameExtensionFilter(
+                    "Ficheros de audio", "mp3", "wav"));
         fileChooserPanel = (JPanel) fileChooser.getComponent(0);
         fileChooserPanel = (JPanel) fileChooserPanel.getComponent(0);
         //Remove Unnecesary buttons
@@ -63,8 +67,12 @@ public class FileChooser extends JPanel {
         fileChooserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                BaseAppFrame.setFileSelectedPath(fileChooser.getSelectedFile()
+                        .getPath());
+                uptadeLocalComponentEnabledState(SongImporter.getAcceptButton(),
+                        SongImporter.getSongNameField(),
+                        BaseAppFrame.getFileSelectedPath());
                 BaseAppFrame.reloadFrameContent(6);
-                //TODO: Implement the other part
             }
         });
 
