@@ -54,27 +54,6 @@ public interface GraphicalComponentsTools {
 
     /**
      * Updates the desired component's enabled state based on a JTextField's
-     * content and a String content
-     *
-     * @param component desired component reference to make the update
-     * @param textField basing JTextField to make the update
-     * @param text basing String to make the update
-     */
-    default <T extends JComponent, U extends JTextField>
-        void uptadeLocalComponentEnabledState(T component, U textField,
-                String text) {
-            boolean isTextFieldFilled = textField.getText().equals("")
-            ? false
-            : true;
-
-            component.setEnabled(
-                    isTextFieldFilled && (text != null
-                    ? true
-                    : false));
-    }
-
-    /**
-     * Updates the desired component's enabled state based on a JTextField's
      * content and a JTable's column-row selection
      *
      * @param component desired component reference to make the update
@@ -97,6 +76,31 @@ public interface GraphicalComponentsTools {
 
             component.setEnabled(
                     (fieldSelectionConfirm != 0) && isTextFieldFilled
+                    ? true
+                    : false);
+    }
+
+    /**
+     * Updates the desired component's enabled state based on a couple
+     * of JTextFields' and a String contents
+     *
+     * @param component desired component reference to make the update
+     * @param textField1 first basing JTextField to make the update
+     * @param textField2 second basing JTextField to make the update
+     * @param text basing String to make the update
+     */
+    default <T extends JComponent, U extends JTextField, V extends JTextField>
+        void uptadeLocalComponentEnabledState(T component, U textField1,
+                V textField2, String text) {
+            boolean isTextField1Filled = textField1.getText().equals("")
+            ? false
+            : true;
+            boolean isTextField2Filled = textField2.getText().equals("")
+            ? false
+            : true;
+
+            component.setEnabled(
+                    isTextField1Filled && isTextField2Filled && !(text == null)
                     ? true
                     : false);
     }

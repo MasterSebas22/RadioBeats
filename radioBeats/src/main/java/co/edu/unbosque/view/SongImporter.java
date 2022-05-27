@@ -35,9 +35,12 @@ public class SongImporter extends JPanel
 
     private JLabel songImporterTittleLabel;
     private JLabel songNameLabel;
+    private JLabel artistNameLabel;
     private JLabel songGenLabel;
     @Setter @Getter
     private static JTextField songNameField;
+    @Setter @Getter
+    private static JTextField artistNameField;
     private JComboBox<String> songGenOptions;
     private JButton selectFileButton;
     @Setter @Getter
@@ -57,16 +60,18 @@ public class SongImporter extends JPanel
     private void initComponents() {
         songImporterTittleLabel = new JLabel();
         songNameLabel = new JLabel();
+        artistNameLabel = new JLabel();
         songGenLabel = new JLabel();
         songNameField = new JTextField();
+        artistNameField = new JTextField();
         songGenOptions = new JComboBox<>();
         selectFileButton = new JButton();
         acceptButton = new JButton();
         cancelButton = new JButton();
 
         setLayout(null);
-        setSize(new Dimension(420, 290));
-        setPreferredSize(new Dimension(420, 290));
+        setSize(new Dimension(420, 296));
+        setPreferredSize(new Dimension(420, 296));
 
         songImporterTittleLabel.setFont(new Font("sansserif", 0, 24));
         songImporterTittleLabel.setBounds(113, 20, 210, 29);
@@ -74,28 +79,34 @@ public class SongImporter extends JPanel
                 .encodeStringUTF8("Importar Canción"));
         add(songImporterTittleLabel);
 
-        songNameLabel.setText("Nuevo Nombre");
-        songNameLabel.setBounds(74, 80, 95, 17);
+        songNameLabel.setText("Nombre");
+        songNameLabel.setBounds(94, 78, 95, 17);
         add(songNameLabel);
 
+        artistNameLabel.setText("Artista");
+        artistNameLabel.setBounds(278, 78, 47, 17);
+        add(artistNameLabel);
+
         songGenLabel.setText(StringEncoder.encodeStringUTF8("Género"));
-        songGenLabel.setBounds(275, 80, 47, 17);
+        songGenLabel.setBounds(95, 135, 47, 17);
         add(songGenLabel);
 
         songNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
-        songNameField.setBounds(50, 100, 140, 30);
+        songNameField.setBounds(50, 98, 140, 30);
         songNameField.getDocument().addDocumentListener(
                 new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
-                        songNameField, BaseAppFrame.getFileSelectedPath());
+                        songNameField, artistNameField,
+                        BaseAppFrame.getFileSelectedPath());
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
-                        songNameField, BaseAppFrame.getFileSelectedPath());
+                        songNameField, artistNameField,
+                        BaseAppFrame.getFileSelectedPath());
             }
 
             @Override
@@ -103,8 +114,31 @@ public class SongImporter extends JPanel
         });
         add(songNameField);
 
+        artistNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
+        artistNameField.setBounds(230, 98, 140, 30);
+        artistNameField.getDocument().addDocumentListener(
+                new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        songNameField, artistNameField,
+                        BaseAppFrame.getFileSelectedPath());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                uptadeLocalComponentEnabledState(acceptButton,
+                        songNameField, artistNameField,
+                        BaseAppFrame.getFileSelectedPath());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {}
+        });
+        add(artistNameField);
+
         songGenOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        songGenOptions.setBounds(230, 100, 140, 30);
+        songGenOptions.setBounds(50, 154, 140, 30);
         songGenOptions.setModel(new DefaultComboBoxModel<>(
                     new String[] {
                         "Rock/Metal", "HipHop/Rap", "Pop", "Reaggeton",
@@ -118,9 +152,9 @@ public class SongImporter extends JPanel
         });
         add(songGenOptions);
 
-        selectFileButton.setText("Seleccionar Fichero");
+        selectFileButton.setText("Tomar Fichero");
         selectFileButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        selectFileButton.setBounds(120, 150, 170, 30);
+        selectFileButton.setBounds(230, 145, 140, 40);
         selectFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -134,7 +168,7 @@ public class SongImporter extends JPanel
 
         acceptButton.setText("Aceptar");
         acceptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        acceptButton.setBounds(92, 210, 100, 30);
+        acceptButton.setBounds(92, 213, 100, 30);
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             @Override
@@ -147,7 +181,7 @@ public class SongImporter extends JPanel
 
         cancelButton.setText("Cancelar");
         cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        cancelButton.setBounds(228, 210, 100, 30);
+        cancelButton.setBounds(228, 213, 100, 30);
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {

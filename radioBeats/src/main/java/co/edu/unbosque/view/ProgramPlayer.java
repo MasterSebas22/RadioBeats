@@ -28,7 +28,7 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class ProgramReproductor extends JPanel
+public class ProgramPlayer extends JPanel
     implements GraphicalComponentsTools {
 
     private JLabel programsListLabel;
@@ -42,7 +42,7 @@ public class ProgramReproductor extends JPanel
     /**
      * Creates new form ProgramReproductor
      */
-    public ProgramReproductor() {
+    public ProgramPlayer() {
         initComponents();
     }
 
@@ -69,6 +69,7 @@ public class ProgramReproductor extends JPanel
         add(playProgramTittleLabel);
 
         programsListLabel.setText(StringEncoder
+
                 .encodeStringUTF8("Lista de Programaciones"));
         programsListLabel.setBounds(184, 60, 180, 30);
         add(programsListLabel);

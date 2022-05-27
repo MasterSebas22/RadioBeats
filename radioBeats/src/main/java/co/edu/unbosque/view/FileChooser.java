@@ -71,6 +71,7 @@ public class FileChooser extends JPanel implements GraphicalComponentsTools {
                         .getPath());
                 uptadeLocalComponentEnabledState(SongImporter.getAcceptButton(),
                         SongImporter.getSongNameField(),
+                        SongImporter.getArtistNameField(),
                         BaseAppFrame.getFileSelectedPath());
                 BaseAppFrame.reloadFrameContent(6);
             }

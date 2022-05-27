@@ -50,7 +50,7 @@ public class BaseAppFrame extends JFrame {
     private static PlayListCreator playListCreator;
     private static StationList stationList;
     private static ProgramCreator programCreator;
-    private static ProgramReproductor programReproductor;
+    private static ProgramPlayer programReproductor;
     private static SongImporter songImporter;
     private static FileChooser fileChooser;
     private static int startupConfirmation;
@@ -78,7 +78,7 @@ public class BaseAppFrame extends JFrame {
         playListCreator = new PlayListCreator();
         stationList = new StationList();
         programCreator = new ProgramCreator();
-        programReproductor = new ProgramReproductor();
+        programReproductor = new ProgramPlayer();
         songImporter = new SongImporter();
         fileChooser = new FileChooser();
         startupConfirmation = 0;
