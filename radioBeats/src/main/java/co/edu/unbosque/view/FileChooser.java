@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
@@ -39,6 +40,7 @@ public class FileChooser extends JPanel implements GraphicalComponentsTools {
      * Initalizes the JPanel components
      */
     private void initComponents() {
+        UIManager.put("FileChooser.readOnly", Boolean.TRUE);
         fileChooser = new JFileChooser();
         fileChooserPanel = null;
         fileChooserButton = null;
@@ -49,12 +51,12 @@ public class FileChooser extends JPanel implements GraphicalComponentsTools {
 
         fileChooser.setBounds(0, 0, 514, 314);
         fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.removeChoosableFileFilter(
+            fileChooser.getChoosableFileFilters()[0]);
         fileChooser.setFileFilter(new FileNameExtensionFilter(
                     "Ficheros de audio", "mp3", "wav"));
         fileChooserPanel = (JPanel) fileChooser.getComponent(0);
         fileChooserPanel = (JPanel) fileChooserPanel.getComponent(0);
-        //Remove Unnecesary buttons
-        fileChooserPanel.remove(4);
 
         //Setting main buttons' event
         fileChooserPanel = (JPanel) fileChooser.getComponent(3);
@@ -67,12 +69,12 @@ public class FileChooser extends JPanel implements GraphicalComponentsTools {
         fileChooserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                BaseAppFrame.setFileSelectedPath(fileChooser.getSelectedFile()
-                        .getPath());
-                uptadeLocalComponentEnabledState(SongImporter.getAcceptButton(),
-                        SongImporter.getSongNameField(),
-                        SongImporter.getArtistNameField(),
-                        BaseAppFrame.getFileSelectedPath());
+                SongImporter.fileSelectedPath = fileChooser.getSelectedFile()
+                        .getPath();
+                uptadeLocalComponentEnabledState(SongImporter.acceptButton,
+                        SongImporter.songNameField,
+                        SongImporter.artistNameField,
+                        SongImporter.fileSelectedPath);
                 BaseAppFrame.reloadFrameContent(6);
             }
         });

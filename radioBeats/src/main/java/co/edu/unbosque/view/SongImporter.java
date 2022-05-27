@@ -17,8 +17,6 @@ import javax.swing.event.DocumentListener;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  *
@@ -37,15 +35,13 @@ public class SongImporter extends JPanel
     private JLabel songNameLabel;
     private JLabel artistNameLabel;
     private JLabel songGenLabel;
-    @Setter @Getter
-    private static JTextField songNameField;
-    @Setter @Getter
-    private static JTextField artistNameField;
+    protected static JTextField songNameField;
+    protected static JTextField artistNameField;
     private JComboBox<String> songGenOptions;
     private JButton selectFileButton;
-    @Setter @Getter
-    private static JButton acceptButton;
+    protected static JButton acceptButton;
     private JButton cancelButton;
+    protected static String fileSelectedPath;
 
     /**
      * Creates new form SongImporter
@@ -68,6 +64,7 @@ public class SongImporter extends JPanel
         selectFileButton = new JButton();
         acceptButton = new JButton();
         cancelButton = new JButton();
+        fileSelectedPath = null;
 
         setLayout(null);
         setSize(new Dimension(420, 296));
@@ -99,14 +96,14 @@ public class SongImporter extends JPanel
             public void insertUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
                         songNameField, artistNameField,
-                        BaseAppFrame.getFileSelectedPath());
+                        fileSelectedPath);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
                         songNameField, artistNameField,
-                        BaseAppFrame.getFileSelectedPath());
+                        fileSelectedPath);
             }
 
             @Override
@@ -122,14 +119,14 @@ public class SongImporter extends JPanel
             public void insertUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
                         songNameField, artistNameField,
-                        BaseAppFrame.getFileSelectedPath());
+                        fileSelectedPath);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
                         songNameField, artistNameField,
-                        BaseAppFrame.getFileSelectedPath());
+                        fileSelectedPath);
             }
 
             @Override
@@ -159,9 +156,6 @@ public class SongImporter extends JPanel
             @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(7);
-                if(BaseAppFrame.getFileSelectedPath() != null) {
-                }
-                //TODO: Implement the other part
             }
         });
         add(selectFileButton);
@@ -175,6 +169,11 @@ public class SongImporter extends JPanel
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
                 //TODO: Implement the other part
+
+                songNameField.setText(null);
+                artistNameField.setText(null);
+                songGenOptions.setSelectedIndex(0);
+                fileSelectedPath = null;
             }
         });
         add(acceptButton);

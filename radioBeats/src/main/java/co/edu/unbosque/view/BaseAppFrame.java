@@ -18,8 +18,6 @@ import javax.swing.WindowConstants;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  *
@@ -54,8 +52,7 @@ public class BaseAppFrame extends JFrame {
     private static SongImporter songImporter;
     private static FileChooser fileChooser;
     private static int startupConfirmation;
-    @Setter @Getter
-    private static String fileSelectedPath;
+    // protected static 
 
     /**
      * Creates new form BaseAppFrame
@@ -82,7 +79,6 @@ public class BaseAppFrame extends JFrame {
         songImporter = new SongImporter();
         fileChooser = new FileChooser();
         startupConfirmation = 0;
-        fileSelectedPath = null;
 
         setTitle("RadioBeats");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

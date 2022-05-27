@@ -42,12 +42,10 @@ public class PlayListCreator extends JPanel
     private JLabel generalSongsListLabel;
     private JTextField playListNameField;
     private JComboBox<String> stationOptions;
-    private JTable soundsList;
+    private JTable generalSongsList;
     private JScrollPane soundsListScrollView;
     private JButton acceptButton;
     private JButton backButton;
-    private String playListName;
-    // private Object[][] soundList;
 
     /**
      * Creates new form PlayListCreator
@@ -67,7 +65,7 @@ public class PlayListCreator extends JPanel
         playListNameField = new JTextField();
         stationOptions = new JComboBox<>();
         soundsListScrollView = new JScrollPane();
-        soundsList = new JTable();
+        generalSongsList = new JTable();
         acceptButton = new JButton();
         backButton = new JButton();
 
@@ -99,13 +97,13 @@ public class PlayListCreator extends JPanel
             @Override
             public void insertUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
-                        playListNameField, soundsList);
+                        playListNameField, generalSongsList);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
-                        playListNameField, soundsList);
+                        playListNameField, generalSongsList);
             }
 
             @Override
@@ -127,8 +125,8 @@ public class PlayListCreator extends JPanel
         });
         add(stationOptions);
 
-        soundsList.getTableHeader().setEnabled(false);
-        soundsList.setModel(new DefaultTableModel(
+        generalSongsList.getTableHeader().setEnabled(false);
+        generalSongsList.setModel(new DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -155,17 +153,17 @@ public class PlayListCreator extends JPanel
                 return column == 0;
             }
         });
-        soundsList.getColumnModel().getColumn(0).setPreferredWidth(1);
-        soundsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        soundsList.addMouseListener(new MouseAdapter() {
+        generalSongsList.getColumnModel().getColumn(0).setPreferredWidth(1);
+        generalSongsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        generalSongsList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 uptadeLocalComponentEnabledState(acceptButton,
-                        playListNameField, soundsList);
+                        playListNameField, generalSongsList);
             }
         });
         soundsListScrollView.setBounds(30, 155, 460, 220);
-        soundsListScrollView.setViewportView(soundsList);
+        soundsListScrollView.setViewportView(generalSongsList);
         add(soundsListScrollView);
 
         acceptButton.setText("Aceptar");
@@ -176,6 +174,10 @@ public class PlayListCreator extends JPanel
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
                 //TODO: Implement the other part
+
+                playListNameField.setText(null);
+                stationOptions.setSelectedIndex(0);
+                //table restart acording station selected pendent
             }
         });
         add(acceptButton);

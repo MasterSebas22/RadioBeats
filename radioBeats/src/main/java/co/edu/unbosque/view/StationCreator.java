@@ -139,6 +139,10 @@ public class StationCreator extends JPanel
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
                 //TODO: Implement the other part
+
+                stationNameField.setText(null);
+                transmistionModeOptions.setSelectedIndex(0);
+                stationMusicGenOptions.setSelectedIndex(0);
             }
         });
         add(acceptButton);
