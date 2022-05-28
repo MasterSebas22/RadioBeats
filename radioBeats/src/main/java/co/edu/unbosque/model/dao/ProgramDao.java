@@ -1,4 +1,4 @@
-package co.edu.unbosque.model.dto;
+package co.edu.unbosque.model.dao;
 
 /**
  *
@@ -10,7 +10,7 @@ package co.edu.unbosque.model.dto;
  * @version 1.0
  *
  */
-public class SongDto {
+public class ProgramDao {
 
     
 }
