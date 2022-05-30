@@ -83,7 +83,7 @@ public class ProgramPlayer extends JPanel
                 {null, null}
             },
             new String [] {
-                "#-------->*", "Nombre",
+                "#-------->*", "Nombre de la Emisora",
             }
         ) {
             @Override

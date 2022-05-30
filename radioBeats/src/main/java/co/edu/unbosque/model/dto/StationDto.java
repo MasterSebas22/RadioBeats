@@ -10,7 +10,7 @@ package co.edu.unbosque.model.dto;
  * @version 1.0
  *
  */
-public class StationDto {
+public interface StationDto {
 
     
 }

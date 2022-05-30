@@ -1,5 +1,11 @@
 package co.edu.unbosque.model.dao;
 
+import java.util.List;
+
+import co.edu.unbosque.model.PlayList;
+import co.edu.unbosque.model.Program;
+import lombok.NoArgsConstructor;
+
 /**
  *
  * @author Bryan Baron
@@ -10,7 +16,12 @@ package co.edu.unbosque.model.dao;
  * @version 1.0
  *
  */
+@NoArgsConstructor
 public class StationDao {
 
-    
+    private String stationName;
+    private String sationTransmitionType;
+    private String stationMusicGender;
+    private List<PlayList> stationPlayListsList;
+    private Program stationProgram;
 }

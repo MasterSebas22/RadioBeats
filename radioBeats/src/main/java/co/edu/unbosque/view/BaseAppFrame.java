@@ -4,6 +4,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +17,9 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
+import co.edu.unbosque.model.Song;
+import co.edu.unbosque.model.dao.StationDao;
+import co.edu.unbosque.util.RadioBeatsDataManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -52,7 +56,9 @@ public class BaseAppFrame extends JFrame {
     private static SongImporter songImporter;
     private static FileChooser fileChooser;
     private static int startupConfirmation;
-    // protected static 
+    protected static List<Song> generalSongList;
+    protected static List<StationDao> stationsList;
+
 
     /**
      * Creates new form BaseAppFrame
@@ -79,6 +85,8 @@ public class BaseAppFrame extends JFrame {
         songImporter = new SongImporter();
         fileChooser = new FileChooser();
         startupConfirmation = 0;
+        generalSongList = null;
+        stationsList = null;
 
         setTitle("RadioBeats");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -112,6 +120,11 @@ public class BaseAppFrame extends JFrame {
         setJMenuBar(baseFrameMenuBar);
 
         if(startupConfirmation == 0) baseAppFramePanel = mainMenu;
+
+        generalSongList = RadioBeatsDataManager
+            .retriveDataUnitsAsObjects(Song.class);
+        stationsList = RadioBeatsDataManager
+            .retriveDataUnitsAsObjects(StationDao.class);
 
         getContentPane().setLayout(baseFrameLayout);
         baseFrameLayout.setHorizontalGroup(
