@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -22,7 +23,7 @@ import co.edu.unbosque.util.StringEncoder;
  * @version 1.0
  *
  */
-public class MainMenu extends JPanel {
+public class MainMenu extends JPanel implements GraphicalComponentsTools {
 
     private JLabel mainMenuTitleLabel;
     private JButton createStationButton;
@@ -76,6 +77,14 @@ public class MainMenu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(2);
+                updateComboBoxElementList(
+                        BaseAppFrame.stationsList,
+                        PlayListCreator.stationOptions);
+                updateTableContent(
+                        BaseAppFrame.generalSongList,
+                        BaseAppFrame.stationsList,
+                        PlayListCreator.stationOptions,
+                        PlayListCreator.generalSongsList);
             }
         });
         add(createPlayListButton);
@@ -97,6 +106,15 @@ public class MainMenu extends JPanel {
         createProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(4);
+                updateComboBoxElementList(
+                        BaseAppFrame.stationsList,
+                        ProgramCreator.stationSelector);
+                updateTableContent(
+                        BaseAppFrame.stationsList.get(
+                            ProgramCreator.stationSelector.getSelectedIndex()
+                        ),
+                        ProgramCreator.stationSelector,
+                        ProgramCreator.playListsList);
             }
         });
         add(createProgramButton);

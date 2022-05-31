@@ -15,7 +15,10 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import co.edu.unbosque.model.Song;
+import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
+import co.edu.unbosque.util.RadioBeatsDataManager;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -167,9 +170,21 @@ public class SongImporter extends JPanel
         acceptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                BaseAppFrame.reloadFrameContent(-1);
-                //TODO: Implement the other part
+                Song newSong = new Song(
+                        songNameField.getText().trim(),
+                        artistNameField.getText().trim(),
+                        songGenOptions.getSelectedItem().toString(),
+                        fileSelectedPath);
 
+                BaseAppFrame.generalSongList.add(newSong);
+                RadioBeatsDataManager.createDataUnit(1,
+                        String.format("%s_%s_%s",
+                            songNameField.getText().trim(),
+                            artistNameField.getText().trim(),
+                            DateTimeGenerator.retriveLocalDate()),
+                        newSong);
+
+                BaseAppFrame.reloadFrameContent(-1);
                 songNameField.setText(null);
                 artistNameField.setText(null);
                 songGenOptions.setSelectedIndex(0);

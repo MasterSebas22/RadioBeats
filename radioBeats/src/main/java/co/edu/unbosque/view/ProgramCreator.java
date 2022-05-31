@@ -36,9 +36,9 @@ public class ProgramCreator extends JPanel
     private JLabel createProgramTittleLabel;
     private JLabel stationSelectorLabel;
     private JLabel playListsListLabel;
-    private JComboBox<String> stationSelector;
+    protected static JComboBox<Object> stationSelector;
     private JScrollPane playListListScrollView;
-    private JTable playListsList;
+    protected static JTable playListsList;
     private JButton acceptButton;
     private JButton backButton;
 
@@ -82,8 +82,7 @@ public class ProgramCreator extends JPanel
 
         stationSelector.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationSelector.setModel(new DefaultComboBoxModel<>(
-                    new String[] { "Emisora 1", "Emisora 2", "Emisora 3",
-                        "Emisora 4" }
+                    new String[] { "" }
                     ));
         stationSelector.setBounds(140, 96, 240, 30);
         stationSelector.addActionListener(new ActionListener() {
@@ -95,12 +94,7 @@ public class ProgramCreator extends JPanel
 
         playListsList.getTableHeader().setEnabled(false);
         playListsList.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
+            new Object [][] {},
             new String [] {
                 "#-------->*", "Nombre",
             }

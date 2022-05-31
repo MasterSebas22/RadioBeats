@@ -3,6 +3,8 @@ package co.edu.unbosque.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -15,6 +17,8 @@ import lombok.NoArgsConstructor;
  * @version 1.0
  *
  */
+@Data
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 public class PlayList {
 

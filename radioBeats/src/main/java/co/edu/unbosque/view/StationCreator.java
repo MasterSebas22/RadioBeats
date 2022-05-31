@@ -15,7 +15,10 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import co.edu.unbosque.model.dao.StationDao;
+import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
+import co.edu.unbosque.util.RadioBeatsDataManager;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -137,9 +140,20 @@ public class StationCreator extends JPanel
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                BaseAppFrame.reloadFrameContent(-1);
-                //TODO: Implement the other part
+                StationDao newStation = new StationDao(
+                            stationNameField.getText().trim(),
+                            transmistionModeOptions.getSelectedItem()
+                                .toString(),
+                            stationMusicGenOptions.getSelectedItem()
+                                .toString());
 
+                BaseAppFrame.stationsList.add(newStation);
+                RadioBeatsDataManager.createDataUnit(2,
+                        String.format("%s_%s",
+                            stationNameField.getText().trim(),
+                            DateTimeGenerator.retriveLocalDate()), newStation);
+
+                BaseAppFrame.reloadFrameContent(-1);
                 stationNameField.setText(null);
                 transmistionModeOptions.setSelectedIndex(0);
                 stationMusicGenOptions.setSelectedIndex(0);

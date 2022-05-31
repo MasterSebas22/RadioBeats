@@ -18,6 +18,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
@@ -41,8 +43,8 @@ public class PlayListCreator extends JPanel
     private JLabel stationSelectorLabel;
     private JLabel generalSongsListLabel;
     private JTextField playListNameField;
-    private JComboBox<String> stationOptions;
-    private JTable generalSongsList;
+    protected static JComboBox<Object> stationOptions;
+    protected static JTable generalSongsList;
     private JScrollPane soundsListScrollView;
     private JButton acceptButton;
     private JButton backButton;
@@ -115,24 +117,29 @@ public class PlayListCreator extends JPanel
         stationOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationOptions.setBounds(278, 90, 180, 30);
         stationOptions.setModel(new DefaultComboBoxModel<>(
-                    new String[] { "Emisora 1", "Emisora 2", "Emisora 3",
-                        "Emisora 4" }
+                    new String[] { "" }
                     ));
-        stationOptions.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
+
+        stationOptions.addPopupMenuListener(new PopupMenuListener() {
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {}
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                updateTableContent(BaseAppFrame.generalSongList,
+                       BaseAppFrame.stationsList,
+                       stationOptions, generalSongsList);
             }
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
         });
         add(stationOptions);
 
         generalSongsList.getTableHeader().setEnabled(false);
         generalSongsList.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
+            new Object [][] {},
             new String [] {
                 "#------>*", "Nombre", "Artista",
                 StringEncoder.encodeStringUTF8("Genéro")
