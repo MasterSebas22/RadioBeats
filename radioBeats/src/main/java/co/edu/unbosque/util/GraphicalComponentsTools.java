@@ -163,13 +163,14 @@ public interface GraphicalComponentsTools {
      * @param list2 second basing list to make the table content update
      * @param comboBox basing JComboBox to make the table content update
      * @param table JTable to get updated
+     * @return the elements putted into the table content
      */
     default <T extends Song, U extends StationDao, V extends JComboBox<Object>,
             W extends JTable>
-        void updateTableContent(List<T> list1, List<U> list2, V comboBox,
+        Song[] updateTableContent(List<T> list1, List<U> list2, V comboBox,
                 W table) {
         DefaultTableModel tbModel = null;
-        Song[] compatibleElements = new Song[0];
+        Song[] compatibleElements = null;
         int compatibleElementsConut = 0;
         int countAux = 0;
 
@@ -180,12 +181,11 @@ public interface GraphicalComponentsTools {
                                     .getStationMusicGender())) {
                     if(i == 0) {
                         ++compatibleElementsConut;
-                        if(j == list1.size() - 1) {
+                    } else {
+                        if(compatibleElements == null) {
                             compatibleElements =
                                 new Song[compatibleElementsConut];
-                            continue;
                         }
-                    } else if(i == 1 && compatibleElements.length > 0) {
                         compatibleElements[countAux++] = list1.get(j);
                     }
                 }
@@ -204,8 +204,9 @@ public interface GraphicalComponentsTools {
                     compatibleElements[i].getSongGender(),
                 });
             }
-
             table.revalidate();
         }
+
+        return compatibleElements;
     }
 }

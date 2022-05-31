@@ -2,11 +2,14 @@ package co.edu.unbosque.view;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -22,7 +25,11 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.model.PlayList;
+import co.edu.unbosque.model.Song;
+import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
+import co.edu.unbosque.util.RadioBeatsDataManager;
 import co.edu.unbosque.util.StringEncoder;
 
 /**
@@ -48,6 +55,7 @@ public class PlayListCreator extends JPanel
     private JScrollPane soundsListScrollView;
     private JButton acceptButton;
     private JButton backButton;
+    private Song[] currentStationCompatibleSongs;
 
     /**
      * Creates new form PlayListCreator
@@ -70,6 +78,7 @@ public class PlayListCreator extends JPanel
         generalSongsList = new JTable();
         acceptButton = new JButton();
         backButton = new JButton();
+        currentStationCompatibleSongs = null;
 
         setLayout(null);
         setSize(new Dimension(520, 470));
@@ -121,15 +130,19 @@ public class PlayListCreator extends JPanel
                     ));
 
         stationOptions.addPopupMenuListener(new PopupMenuListener() {
-
             @Override
             public void popupMenuCanceled(PopupMenuEvent e) {}
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                updateTableContent(BaseAppFrame.generalSongList,
-                       BaseAppFrame.stationsList,
-                       stationOptions, generalSongsList);
+                EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        currentStationCompatibleSongs =
+                            updateTableContent(BaseAppFrame.generalSongList,
+                               BaseAppFrame.stationsList,
+                               stationOptions, generalSongsList);
+                    }
+                });
             }
 
             @Override
@@ -179,12 +192,14 @@ public class PlayListCreator extends JPanel
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                BaseAppFrame.reloadFrameContent(-1);
-                //TODO: Implement the other part
+                BaseAppFrame.stationsList.get(
+                        stationOptions.getSelectedIndex()
+                 ).getStationPlayListsList()
+                    .add(retriveAndCreateNewPlayList());
 
+                BaseAppFrame.reloadFrameContent(-1);
                 playListNameField.setText(null);
                 stationOptions.setSelectedIndex(0);
-                //table restart acording station selected pendent
             }
         });
         add(acceptButton);
@@ -198,5 +213,41 @@ public class PlayListCreator extends JPanel
             }
         });
         add(backButton);
+    }
+
+    /**
+     * Retrives the necesary information to create a new playList and creates it
+     *
+     * @return a new PlayList instance completely created
+     */
+    private PlayList retriveAndCreateNewPlayList() {
+        PlayList newPlayList = new PlayList(playListNameField.getText().trim());
+        List<Integer> songsSelectionsIndexes = new ArrayList<>();
+        List<Song> newPlayListSongsList = new ArrayList<>();
+        DefaultTableModel songListTableModel =
+            (DefaultTableModel) generalSongsList.getModel();
+
+        for(int i = 0; i < songListTableModel.getRowCount(); i++) {
+            if((Boolean) songListTableModel.getValueAt(i, 0)) {
+                songsSelectionsIndexes.add(i);
+            }
+        }
+
+        for(int i = 0; i < songsSelectionsIndexes.size(); i++) {
+            newPlayListSongsList.add(
+                    currentStationCompatibleSongs[songsSelectionsIndexes.get(i)]);
+        }
+        newPlayList.setPlayListSongs(newPlayListSongsList);
+
+        RadioBeatsDataManager.createDataUnit(3,
+                String.format("%s_playList_%s_%s",
+                    BaseAppFrame.stationsList.get(
+                            stationOptions.getSelectedIndex()
+                     ).getStationName(), DateTimeGenerator.retriveLocalDate(),
+                    DateTimeGenerator.retriveLocalTime()
+                ),
+                newPlayList);
+
+        return newPlayList;
     }
 }

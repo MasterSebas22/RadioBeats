@@ -3,6 +3,7 @@ package co.edu.unbosque.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.unbosque.util.RadioBeatsDataManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@ public class PlayList {
      */
     public PlayList(String playListName) {
         this.playListName = playListName;
-        this.playListSongs = new ArrayList<>();
+        this.playListSongs = RadioBeatsDataManager
+            .retriveDataUnitsAsObjects(Song.class);
     }
 }

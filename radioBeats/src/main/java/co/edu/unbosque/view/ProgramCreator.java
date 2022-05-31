@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
@@ -85,10 +88,24 @@ public class ProgramCreator extends JPanel
                     new String[] { "" }
                     ));
         stationSelector.setBounds(140, 96, 240, 30);
-        stationSelector.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
+        stationSelector.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {}
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        updateTableContent(
+                                BaseAppFrame.stationsList.get(
+                                    stationSelector.getSelectedIndex()
+                                ), stationSelector, playListsList);
+                    }
+                });
             }
+
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
         });
         add(stationSelector);
 
