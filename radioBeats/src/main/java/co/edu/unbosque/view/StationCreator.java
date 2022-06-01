@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import co.edu.unbosque.model.dao.StationDao;
+import co.edu.unbosque.model.dto.StationDTO;
 import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.RadioBeatsDataManager;
@@ -42,7 +42,7 @@ public class StationCreator extends JPanel
     private JComboBox<String> stationMusicGenOptions;
     private JComboBox<String> transmistionModeOptions;
     private JButton acceptButton;
-    private JButton backButton;
+    private JButton cancelButton;
 
     /**
      * Creates new form StationCreator
@@ -63,7 +63,7 @@ public class StationCreator extends JPanel
         transmistionModeOptions = new JComboBox<>();
         stationMusicGenOptions = new JComboBox<>();
         acceptButton = new JButton();
-        backButton = new JButton();
+        cancelButton = new JButton();
 
         setLayout(null);
         setSize(new Dimension(433, 300));
@@ -131,37 +131,23 @@ public class StationCreator extends JPanel
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                StationDao newStation = new StationDao(
-                        StringUtils.sanitizeStringCharacters(
-                            stationNameField.getText().trim()),
-                        transmistionModeOptions.getSelectedItem()
-                            .toString(),
-                        stationMusicGenOptions.getSelectedItem()
-                            .toString());
-
-                BaseAppFrame.stationsList.add(newStation);
-                RadioBeatsDataManager.createDataUnit(2,
-                        String.format("%s_%s",
-                            StringUtils.sanitizeStringCharacters(
-                                stationNameField.getText().trim()),
-                            DateTimeGenerator.retriveLocalDate()), newStation);
-
+                retriveAndCreateNewStation();
                 BaseAppFrame.reloadFrameContent(-1);
                 updateLocalComponetsOnExit();
             }
         });
         add(acceptButton);
 
-        backButton.setText("Cancelar");
-        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backButton.setBounds(230, 217, 100, 30);
-        backButton.addActionListener(new ActionListener() {
+        cancelButton.setText("Cancelar");
+        cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cancelButton.setBounds(230, 217, 100, 30);
+        cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
                 updateLocalComponetsOnExit();
             }
         });
-        add(backButton);
+        add(cancelButton);
     }
 
     /**
@@ -172,5 +158,25 @@ public class StationCreator extends JPanel
         stationNameField.setText(null);
         transmistionModeOptions.setSelectedIndex(0);
         stationMusicGenOptions.setSelectedIndex(0);
+    }
+
+    /**
+     * Retrives the necesary information to create a new station and creates it
+     */
+    private void retriveAndCreateNewStation() {
+        StationDTO newStation = new StationDTO(
+                StringUtils.sanitizeStringCharacters(
+                    stationNameField.getText().trim()),
+                transmistionModeOptions.getSelectedItem()
+                    .toString(),
+                stationMusicGenOptions.getSelectedItem()
+                    .toString());
+
+        RadioBeatsDataManager.createDataUnit(2,
+                String.format("%s_%s",
+                    StringUtils.sanitizeStringCharacters(
+                        stationNameField.getText().trim()),
+                    DateTimeGenerator.retriveLocalDate()), newStation);
+        BaseAppFrame.stationsList.add(newStation);
     }
 }

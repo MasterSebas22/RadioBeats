@@ -11,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.model.PlayList;
 import co.edu.unbosque.model.Song;
-import co.edu.unbosque.model.dao.StationDao;
+import co.edu.unbosque.model.dto.StationDTO;
 
 /**
  *
@@ -120,7 +120,7 @@ public interface GraphicalComponentsTools {
      * @param list basing list to make the JComboBox's elements list update
      * @param comboBox JComboBox reference to get updated
      */
-    default <T extends StationDao, U extends JComboBox<Object>>
+    default <T extends StationDTO, U extends JComboBox<Object>>
         void updateComboBoxElementList(List<T> list, U comboBox) {
         String[] elementNames = new String[list.size()];
         for(int i = 0; i < list.size(); i++) {
@@ -130,30 +130,56 @@ public interface GraphicalComponentsTools {
     }
 
     /**
-     * Updates a JTable's content based on a Station's atributes and a
-     * JComboBox selection
+     * Updates a JTable's content based on a objects list
      *
-     * @param station basing station to make the table content update
-     * @param comboBox basing JComboBox to make the table content update
+     * @param list basing list to make the table content update
      * @param table JTable to get updated
      */
-    default <T extends StationDao, U extends JComboBox<Object>, V extends JTable>
-        void updateTableContent(StationDao station, U comboBox, V table) {
+    default <T extends StationDTO, U extends JTable>
+        void updateTableContent(List<StationDTO> list, U table) {
         DefaultTableModel tbModel = null;
-        Object[] listElementsArray = station.getStationPlayListsList().toArray();
+        Object[] listElementsArray = list.toArray();
 
         tbModel = (DefaultTableModel) table.getModel();
         tbModel.setRowCount(0);
 
         for(int i = 0; i < listElementsArray.length; i++) {
             tbModel.addRow(new Object[] {
-                false,
-                ((PlayList) listElementsArray[i]).getPlayListName(),
+                ((StationDTO) listElementsArray[i]).getStationName(),
+                ((StationDTO) listElementsArray[i]).getStationTransmitionType(),
+                ((StationDTO) listElementsArray[i]).getStationMusicGender(),
             });
         }
 
-        if(station.getStationProgram() != null) table.setEnabled(false);
-        else table.setEnabled(true);
+        table.revalidate();
+    }
+
+    /**
+     * Updates a JTable's content based on a Object's atributes and a
+     * JComboBox selection
+     *
+     * @param object basing object to make the table content update
+     * @param comboBox basing JComboBox to make the table content update
+     * @param table JTable to get updated
+     */
+    default <T extends StationDTO, U extends JComboBox<Object>, V extends JTable>
+        void updateTableContent(StationDTO object, U comboBox, V table) {
+        DefaultTableModel tbModel = (DefaultTableModel) table.getModel();
+        tbModel.setRowCount(0);
+
+        if(object != null) {
+            Object[] listElementsArray = object.getStationPlayListsList()
+                .toArray();
+            for(int i = 0; i < listElementsArray.length; i++) {
+                tbModel.addRow(new Object[] {
+                    false,
+                    ((PlayList) listElementsArray[i]).getPlayListName(),
+                });
+            }
+
+            if(object.getStationProgram() != null) table.setEnabled(false);
+            else table.setEnabled(true);
+        }
 
         table.revalidate();
     }
@@ -168,37 +194,37 @@ public interface GraphicalComponentsTools {
      * @param table JTable to get updated
      * @return the elements putted into the table content
      */
-    default <T extends Song, U extends StationDao, V extends JComboBox<Object>,
+    default <T extends Song, U extends StationDTO, V extends JComboBox<Object>,
             W extends JTable>
         Song[] updateTableContent(List<T> list1, List<U> list2, V comboBox,
                 W table) {
-        DefaultTableModel tbModel = null;
+        DefaultTableModel tbModel = (DefaultTableModel) table.getModel();
         Song[] compatibleElements = null;
         int compatibleElementsConut = 0;
         int countAux = 0;
 
-        for(int i = 0; i < 2; i++) {
-            for(int j = 0; j < list1.size(); j++) {
-                if(list1.get(j).getSongGender().equals(list2.get(
-                                comboBox.getSelectedIndex())
-                                    .getStationMusicGender())) {
-                    if(i == 0) {
-                        ++compatibleElementsConut;
-                    } else {
-                        if(compatibleElements == null) {
-                            compatibleElements =
-                                new Song[compatibleElementsConut];
+        if(!list1.isEmpty() && !list2.isEmpty()) {
+            for(int i = 0; i < 2; i++) {
+                for(int j = 0; j < list1.size(); j++) {
+                    if(list1.get(j).getSongGender().equals(list2.get(
+                                    comboBox.getSelectedIndex())
+                                        .getStationMusicGender())) {
+                        if(i == 0) {
+                            ++compatibleElementsConut;
+                        } else {
+                            if(compatibleElements == null) {
+                                compatibleElements =
+                                    new Song[compatibleElementsConut];
+                            }
+                            compatibleElements[countAux++] = list1.get(j);
                         }
-                        compatibleElements[countAux++] = list1.get(j);
                     }
                 }
             }
         }
 
+        tbModel.setRowCount(0);
         if(compatibleElements != null) {
-            tbModel = (DefaultTableModel) table.getModel();
-            tbModel.setRowCount(0);
-
             for(int i = 0; i < compatibleElements.length; i++) {
                 tbModel.addRow(new Object[] {
                     false,
@@ -207,8 +233,8 @@ public interface GraphicalComponentsTools {
                     compatibleElements[i].getSongGender(),
                 });
             }
-            table.revalidate();
         }
+        table.revalidate();
 
         return compatibleElements;
     }

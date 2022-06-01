@@ -2,6 +2,7 @@ package co.edu.unbosque.view;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.util.GraphicalComponentsTools;
+import co.edu.unbosque.util.RadioBeatsDataManager;
 import co.edu.unbosque.util.StringUtils;
 
 /**
@@ -27,11 +30,11 @@ import co.edu.unbosque.util.StringUtils;
  * @version 1.0
  *
  */
-public class StationList extends JPanel {
+public class StationList extends JPanel implements GraphicalComponentsTools {
 
     private JLabel stationsListTittleLabel;
     private JScrollPane stationsListScrollView;
-    private JTable stationsList;
+    protected static JTable stationsList;
     private JButton editStationButton;
     private JButton deleteStationButton;
     private JButton backButton;
@@ -65,12 +68,7 @@ public class StationList extends JPanel {
 
         stationsList.getTableHeader().setEnabled(false);
         stationsList.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
+            new Object [][] {},
             new String [] {
                 "Nombre",
                 StringUtils.encodeStringUTF8("Modo de Transmisión"),
@@ -106,6 +104,7 @@ public class StationList extends JPanel {
         editStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 //
+                updateLocalComponetsOnExit();
             }
         });
         add(editStationButton);
@@ -116,7 +115,8 @@ public class StationList extends JPanel {
         deleteStationButton.setEnabled(false);
         deleteStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                graphicStationsActions(1);
+                updateLocalComponetsOnExit();
             }
         });
         add(deleteStationButton);
@@ -127,9 +127,47 @@ public class StationList extends JPanel {
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
-                //TODO: Implement the other part
+                updateLocalComponetsOnExit();
             }
         });
         add(backButton);
+    }
+
+    /**
+     * Updates a local panel's components on exit
+     */
+    @Override
+    public void updateLocalComponetsOnExit() {
+        editStationButton.setEnabled(false);
+        deleteStationButton.setEnabled(false);
+    }
+
+    /**
+     * Performes crud actions over the station list and represents it graphically
+     *
+     * @param actionOption option of the desired action to perform
+     */
+    private void graphicStationsActions(int actionOption) {
+        switch(actionOption) {
+            case 1:
+                RadioBeatsDataManager.deleteDataUnit(BaseAppFrame.stationsList
+                    .get(stationsList.getSelectedRow()).getDataUnitPath());
+
+                BaseAppFrame.stationsList
+                    .get(stationsList.getSelectedRow())
+                    .deleteStation(BaseAppFrame.stationsList);
+                break;
+            case 2:
+
+                break;
+        }
+
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                updateTableContent(
+                    BaseAppFrame.stationsList,
+                    StationList.stationsList);
+            }
+        });
     }
 }

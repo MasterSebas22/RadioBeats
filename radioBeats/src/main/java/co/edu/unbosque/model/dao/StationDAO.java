@@ -1,8 +1,8 @@
-package co.edu.unbosque.model.dto;
+package co.edu.unbosque.model.dao;
 
 import java.util.List;
 
-import co.edu.unbosque.model.dao.StationDao;
+import co.edu.unbosque.model.dto.StationDTO;
 
 /**
  *
@@ -14,7 +14,7 @@ import co.edu.unbosque.model.dao.StationDao;
  * @version 1.0
  *
  */
-public interface StationDto {
+public interface StationDAO {
 
     /**
      * Updates the radio beats' station information
@@ -24,7 +24,7 @@ public interface StationDto {
      * @param stationTransmitionType transmition type of the creating station
      * @param stationMusicGender gender of the music ofered by the creating station
      */
-    void updateStation(StationDao station, String stationName,
+    void updateStation(StationDTO station, String stationName,
             String stationTransmitionType, String stationMusicGender);
 
     /**
@@ -32,5 +32,5 @@ public interface StationDto {
      *
      * @param generalStationList the radio beats' general stations list
      */
-    void deleteStation(List<StationDao> generalStationList);
+    void deleteStation(List<StationDTO> generalStationList);
 }

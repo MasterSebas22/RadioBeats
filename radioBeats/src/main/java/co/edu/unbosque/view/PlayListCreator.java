@@ -27,9 +27,7 @@ import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.model.PlayList;
 import co.edu.unbosque.model.Song;
-import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
-import co.edu.unbosque.util.RadioBeatsDataManager;
 import co.edu.unbosque.util.StringUtils;
 
 /**
@@ -54,7 +52,7 @@ public class PlayListCreator extends JPanel
     protected static JTable generalSongsList;
     private JScrollPane soundsListScrollView;
     private JButton acceptButton;
-    private JButton backButton;
+    private JButton cancelButton;
     protected static Song[] currentStationCompatibleSongs;
 
     /**
@@ -77,7 +75,7 @@ public class PlayListCreator extends JPanel
         soundsListScrollView = new JScrollPane();
         generalSongsList = new JTable();
         acceptButton = new JButton();
-        backButton = new JButton();
+        cancelButton = new JButton();
         currentStationCompatibleSongs = null;
 
         setLayout(null);
@@ -141,6 +139,8 @@ public class PlayListCreator extends JPanel
                                 updateTableContent(BaseAppFrame.generalSongList,
                                    BaseAppFrame.stationsList,
                                    stationOptions, generalSongsList);
+                            uptadeLocalComponentEnabledState(acceptButton,
+                                    playListNameField, generalSongsList);
                         }
                     });
                 }
@@ -200,16 +200,16 @@ public class PlayListCreator extends JPanel
         });
         add(acceptButton);
 
-        backButton.setText("Cancelar");
-        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backButton.setBounds(280, 390, 100, 30);
-        backButton.addActionListener(new ActionListener() {
+        cancelButton.setText("Cancelar");
+        cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cancelButton.setBounds(280, 390, 100, 30);
+        cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
                 updateLocalComponetsOnExit();
             }
         });
-        add(backButton);
+        add(cancelButton);
     }
 
     /**
@@ -237,17 +237,6 @@ public class PlayListCreator extends JPanel
         }
         newPlayList.setPlayListSongs(newPlayListSongsList);
 
-        RadioBeatsDataManager.createDataUnit(3,
-                String.format("%s_playList_%d_%s",
-                    BaseAppFrame.stationsList
-                        .get(stationOptions.getSelectedIndex()).getStationName(),
-                    BaseAppFrame.stationsList
-                        .get(stationOptions.getSelectedIndex())
-                            .getStationPlayListsList().size(),
-                    DateTimeGenerator.retriveLocalDate()
-                ),
-                newPlayList);
-
         BaseAppFrame.stationsList.get(stationOptions.getSelectedIndex())
             .getStationPlayListsList()
             .add(newPlayList);
@@ -259,6 +248,7 @@ public class PlayListCreator extends JPanel
     @Override
     public void updateLocalComponetsOnExit() {
         playListNameField.setText(null);
-        stationOptions.setSelectedIndex(0);
+        if(!BaseAppFrame.stationsList.isEmpty())
+            stationOptions.setSelectedIndex(0);
     }
 }

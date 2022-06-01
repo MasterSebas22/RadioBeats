@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.edu.unbosque.Main;
-import co.edu.unbosque.model.PlayList;
 import co.edu.unbosque.model.Song;
-import co.edu.unbosque.model.dao.StationDao;
+import co.edu.unbosque.model.dto.StationDTO;
 
 /**
  *
@@ -25,8 +24,6 @@ public class RadioBeatsDataManager {
     public static final String TMP_MAIN_DIR_NAME = "radioBeatsSavedData";
     public static final String TMP_SONGS_DIR_NAME = "importedSongs";
     public static final String TMP_STATIONS_DIR_NAME = "stationsCreated";
-    public static final String TMP_PLAYLISTS_DIR_NAME = "playListsCreated";
-    public static final String TMP_PROGRAMS_DIR_NAME = "programsCreated";
 
     /**
      * Obtains the general aplication's context path
@@ -64,21 +61,17 @@ public class RadioBeatsDataManager {
         if(!targetDir.exists()) {
             targetDir.mkdir();
 
-            for(int i = 0; i < 4; i++) {
+            for(int i = 0; i < 2; i++) {
                 File subDir = new File(String.format("%s/%s",
                             mainTargetDirPath, i == 0
                                 ? TMP_SONGS_DIR_NAME
-                                : i == 1
-                                ? TMP_STATIONS_DIR_NAME
-                                : i == 2
-                                ? TMP_PLAYLISTS_DIR_NAME
-                                : TMP_PROGRAMS_DIR_NAME));
+                                : TMP_STATIONS_DIR_NAME));
                 if(!subDir.exists()) subDir.mkdir();
             }
         }
 
         return mainTargetDirPath;
-    }//TODO: IMPLEMENT THE SUBDIRECTORIES CREATION AND RETRIVING
+    }
 
     /**
      * Checks if a path-specified data unit exist
@@ -104,19 +97,31 @@ public class RadioBeatsDataManager {
         String mainTargetDirPath = getOrCreateDataTargetDirectories();
         String selectedDir = directoryOption == 1
             ? TMP_SONGS_DIR_NAME
-            : directoryOption == 2
-            ? TMP_STATIONS_DIR_NAME
-            : directoryOption == 3
-            ? TMP_PLAYLISTS_DIR_NAME
-            : TMP_PROGRAMS_DIR_NAME;
+            : TMP_STATIONS_DIR_NAME;
+        String newDataUnitPath =
+            String.format("%s/%s/%s.json",mainTargetDirPath,
+                    selectedDir, name);
+
+        if(object instanceof StationDTO) {
+            ((StationDTO) object).setDataUnitPath(newDataUnitPath);
+        };
 
         try {
-            mapper.writeValue(new File(String.format("%s/%s.json",
-                            String.format("%s/%s", mainTargetDirPath, selectedDir),
-                            name)), object);
+            mapper.writeValue(new File(newDataUnitPath), object);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Deletes a path-specified dataUnit
+     *
+     * @param dataUnitPath absolute path of the deleting data unit
+     */
+    public static void deleteDataUnit(String dataUnitPath) {
+        File deletingDataUnit = new File(dataUnitPath);
+        if(!deletingDataUnit.exists()) return;
+        deletingDataUnit.delete();
     }
 
     /**
@@ -129,11 +134,7 @@ public class RadioBeatsDataManager {
     public static <T> ArrayList<T> retriveDataUnitsAsObjects(Class<T> type) {
        String selectedDir = type == Song.class
             ? TMP_SONGS_DIR_NAME
-            : type == StationDao.class
-            ? TMP_STATIONS_DIR_NAME
-            : type == PlayList.class
-            ? TMP_PLAYLISTS_DIR_NAME
-            : TMP_PROGRAMS_DIR_NAME;
+            : TMP_STATIONS_DIR_NAME;
 
         File objectsTargetDir = new File(
                 String.format("%s/%s", getOrCreateDataTargetDirectories(),

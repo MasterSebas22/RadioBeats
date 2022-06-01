@@ -3,6 +3,7 @@ package co.edu.unbosque.view;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
@@ -18,7 +19,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.WindowConstants;
 
 import co.edu.unbosque.model.Song;
-import co.edu.unbosque.model.dao.StationDao;
+import co.edu.unbosque.model.dto.StationDTO;
 import co.edu.unbosque.util.RadioBeatsDataManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -55,9 +56,8 @@ public class BaseAppFrame extends JFrame {
     private static ProgramPlayer programReproductor;
     private static SongImporter songImporter;
     private static FileChooser fileChooser;
-    private static int startupConfirmation;
     protected static List<Song> generalSongList;
-    protected static List<StationDao> stationsList;
+    protected static List<StationDTO> stationsList;
 
 
     /**
@@ -84,7 +84,6 @@ public class BaseAppFrame extends JFrame {
         programReproductor = new ProgramPlayer();
         songImporter = new SongImporter();
         fileChooser = new FileChooser();
-        startupConfirmation = 0;
         generalSongList = null;
         stationsList = null;
 
@@ -119,12 +118,12 @@ public class BaseAppFrame extends JFrame {
 
         setJMenuBar(baseFrameMenuBar);
 
-        if(startupConfirmation == 0) baseAppFramePanel = mainMenu;
+        baseAppFramePanel = mainMenu;
 
         generalSongList = RadioBeatsDataManager
             .retriveDataUnitsAsObjects(Song.class);
         stationsList = RadioBeatsDataManager
-            .retriveDataUnitsAsObjects(StationDao.class);
+            .retriveDataUnitsAsObjects(StationDTO.class);
 
         getContentPane().setLayout(baseFrameLayout);
         baseFrameLayout.setHorizontalGroup(
@@ -156,7 +155,6 @@ public class BaseAppFrame extends JFrame {
      * @param panelOption the replacing JFrame panel option
      */
     public static void reloadFrameContent(int panelOption) {
-        startupConfirmation = startupConfirmation == 0 ? 1 : 1;
         baseAppFrame.remove(baseAppFramePanel);
 
         switch(panelOption) {
@@ -187,14 +185,17 @@ public class BaseAppFrame extends JFrame {
                 break;
         }
 
-        baseAppFrame.add(baseAppFramePanel);
-        baseAppFrame.setSize(baseAppFramePanel.getSize());
-        baseAppFrame.setPreferredSize(baseAppFramePanel.getSize());
-        baseAppFrame.repaint();
-        baseAppFrame.setLocationRelativeTo(null);
-        baseFrameMenuBar
-                .getComponent(0).setEnabled(
-                        baseAppFramePanel.equals(mainMenu) ? true : false);
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                baseAppFrame.add(baseAppFramePanel);
+                baseAppFrame.setSize(baseAppFramePanel.getSize());
+                baseAppFrame.setPreferredSize(baseAppFramePanel.getSize());
+                baseAppFrame.repaint();
+                baseAppFrame.setLocationRelativeTo(null);
+                baseFrameMenuBar.getComponent(0).setEnabled(baseAppFramePanel
+                        .equals(mainMenu) ? true : false);
+            }
+        });
     }
 
     /**

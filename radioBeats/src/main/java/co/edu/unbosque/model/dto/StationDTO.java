@@ -1,11 +1,13 @@
-package co.edu.unbosque.model.dao;
+package co.edu.unbosque.model.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import co.edu.unbosque.model.PlayList;
 import co.edu.unbosque.model.Program;
-import co.edu.unbosque.model.dto.StationDto;
+import co.edu.unbosque.model.dao.StationDAO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,12 +25,17 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-public class StationDao implements StationDto {
+@JsonIgnoreProperties(value = {
+    "stationPlayListsList",
+    "stationProgram"
+})
+public class StationDTO implements StationDAO {
 
     private String stationName;
     private String stationTransmitionType;
     private String stationMusicGender;
-    private List<PlayList> stationPlayListsList;
+    private String dataUnitPath;
+    private List<PlayList> stationPlayListsList = new ArrayList<>();
     private Program stationProgram;
 
     /**
@@ -38,12 +45,12 @@ public class StationDao implements StationDto {
      * @param stationTransmitionType transmition type of the creating station
      * @param stationMusicGender gender of the music ofered by the creating station
      */
-    public StationDao(String stationName,
+    public StationDTO(String stationName,
             String stationTransmitionType, String stationMusicGender) {
         this.stationName = stationName;
         this.stationTransmitionType = stationTransmitionType;
         this.stationMusicGender = stationMusicGender;
-        this.stationPlayListsList = new ArrayList<>();
+        this.dataUnitPath = null;
         this.stationProgram = null;
     }
 
@@ -56,7 +63,7 @@ public class StationDao implements StationDto {
      * @param stationMusicGender gender of the music ofered by the creating station
      */
     @Override
-    public void updateStation(StationDao station, String stationName,
+    public void updateStation(StationDTO station, String stationName,
             String stationTransmitionType, String stationMusicGender) {
         this.stationName = stationName;
         this.stationTransmitionType = stationTransmitionType;
@@ -69,7 +76,7 @@ public class StationDao implements StationDto {
      * @param generalStationList the radio beats' general stations list
      */
     @Override
-    public void deleteStation(List<StationDao> generalStationList) {
+    public void deleteStation(List<StationDTO> generalStationList) {
         generalStationList.remove(this);
     }
 }

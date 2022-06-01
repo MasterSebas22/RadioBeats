@@ -170,24 +170,7 @@ public class SongImporter extends JPanel
         acceptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                Song newSong = new Song(
-                        StringUtils.sanitizeStringCharacters(
-                            songNameField.getText().trim()),
-                        StringUtils.sanitizeStringCharacters(
-                            artistNameField.getText().trim()),
-                        songGenOptions.getSelectedItem().toString(),
-                        fileSelectedPath);
-
-                BaseAppFrame.generalSongList.add(newSong);
-                RadioBeatsDataManager.createDataUnit(1,
-                        String.format("%s_%s_%s",
-                        StringUtils.sanitizeStringCharacters(
-                            songNameField.getText().trim()),
-                        StringUtils.sanitizeStringCharacters(
-                            artistNameField.getText().trim()),
-                            DateTimeGenerator.retriveLocalDate()),
-                        newSong);
-
+                retriveAndImportNewSong();
                 BaseAppFrame.reloadFrameContent(-1);
                 updateLocalComponetsOnExit();
             }
@@ -205,6 +188,29 @@ public class SongImporter extends JPanel
             }
         });
         add(cancelButton);
+    }
+
+    /**
+     * Retrives the necesary information to import a new song and imports it
+     */
+    private void retriveAndImportNewSong() {
+        Song newSong = new Song(
+                StringUtils.sanitizeStringCharacters(
+                    songNameField.getText().trim()),
+                StringUtils.sanitizeStringCharacters(
+                    artistNameField.getText().trim()),
+                songGenOptions.getSelectedItem().toString(),
+                fileSelectedPath);
+
+        RadioBeatsDataManager.createDataUnit(1,
+                String.format("%s_%s_%s",
+                StringUtils.sanitizeStringCharacters(
+                    songNameField.getText().trim()),
+                StringUtils.sanitizeStringCharacters(
+                    artistNameField.getText().trim()),
+                    DateTimeGenerator.retriveLocalDate()),
+                newSong);
+        BaseAppFrame.generalSongList.add(newSong);
     }
 
     /**

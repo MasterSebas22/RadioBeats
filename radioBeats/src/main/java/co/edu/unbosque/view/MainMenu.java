@@ -76,18 +76,16 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
         createPlayListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                updateComboBoxElementList(
+                        BaseAppFrame.stationsList,
+                        PlayListCreator.stationOptions);
+                PlayListCreator.currentStationCompatibleSongs =
+                    updateTableContent(
+                        BaseAppFrame.generalSongList,
+                        BaseAppFrame.stationsList,
+                        PlayListCreator.stationOptions,
+                        PlayListCreator.generalSongsList);
                 BaseAppFrame.reloadFrameContent(2);
-                if(!BaseAppFrame.stationsList.isEmpty()) {
-                    updateComboBoxElementList(
-                            BaseAppFrame.stationsList,
-                            PlayListCreator.stationOptions);
-                    PlayListCreator.currentStationCompatibleSongs =
-                        updateTableContent(
-                            BaseAppFrame.generalSongList,
-                            BaseAppFrame.stationsList,
-                            PlayListCreator.stationOptions,
-                            PlayListCreator.generalSongsList);
-                }
             }
         });
         add(createPlayListButton);
@@ -98,6 +96,9 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
         seeStationListButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(3);
+                updateTableContent(
+                    BaseAppFrame.stationsList,
+                    StationList.stationsList);
             }
         });
         add(seeStationListButton);
@@ -109,17 +110,17 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
         createProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(4);
-                if(!BaseAppFrame.stationsList.isEmpty()) {
-                    updateComboBoxElementList(
-                            BaseAppFrame.stationsList,
-                            ProgramCreator.stationSelector);
-                    updateTableContent(
-                            BaseAppFrame.stationsList.get(
-                                ProgramCreator.stationSelector.getSelectedIndex()
-                            ),
-                            ProgramCreator.stationSelector,
-                            ProgramCreator.playListsList);
-                }
+                updateComboBoxElementList(
+                        BaseAppFrame.stationsList,
+                        ProgramCreator.stationSelector);
+                updateTableContent(
+                        BaseAppFrame.stationsList.isEmpty()
+                        ? null
+                        : BaseAppFrame.stationsList.get(
+                            ProgramCreator.stationSelector.getSelectedIndex()
+                        ),
+                        ProgramCreator.stationSelector,
+                        ProgramCreator.playListsList);
             }
         });
         add(createProgramButton);

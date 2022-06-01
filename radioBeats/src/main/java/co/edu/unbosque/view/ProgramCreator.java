@@ -24,9 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.model.PlayList;
 import co.edu.unbosque.model.Program;
-import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
-import co.edu.unbosque.util.RadioBeatsDataManager;
 import co.edu.unbosque.util.StringUtils;
 
 /**
@@ -49,7 +47,7 @@ public class ProgramCreator extends JPanel
     private JScrollPane playListListScrollView;
     protected static JTable playListsList;
     private JButton acceptButton;
-    private JButton backButton;
+    private JButton cancelButton;
 
     /**
      * Creates new form ProgramCreator
@@ -69,7 +67,7 @@ public class ProgramCreator extends JPanel
         playListListScrollView = new JScrollPane();
         playListsList = new JTable();
         acceptButton = new JButton();
-        backButton = new JButton();
+        cancelButton = new JButton();
 
         setLayout(null);
         setSize(new Dimension(515, 510));
@@ -168,16 +166,16 @@ public class ProgramCreator extends JPanel
         });
         add(acceptButton);
 
-        backButton.setText("Cancelar");
-        backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backButton.setBounds(280, 430, 100, 30);
-        backButton.addActionListener(new ActionListener() {
+        cancelButton.setText("Cancelar");
+        cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cancelButton.setBounds(280, 430, 100, 30);
+        cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
                 updateLocalComponetsOnExit();
             }
         });
-        add(backButton);
+        add(cancelButton);
     }
 
     /**
@@ -205,14 +203,6 @@ public class ProgramCreator extends JPanel
         }
         newProgram = new Program(newProgramPlayListsList);
 
-        RadioBeatsDataManager.createDataUnit(4,
-                String.format("%s_program_%s",
-                    BaseAppFrame.stationsList
-                        .get(stationSelector.getSelectedIndex()).getStationName(),
-                    DateTimeGenerator.retriveLocalDate()
-                ),
-                newProgram);
-
         BaseAppFrame.stationsList.get(stationSelector.getSelectedIndex())
             .setStationProgram(newProgram);
     }
@@ -222,6 +212,7 @@ public class ProgramCreator extends JPanel
      */
     @Override
     public void updateLocalComponetsOnExit() {
-        stationSelector.setSelectedIndex(0);
+        if(!BaseAppFrame.stationsList.isEmpty())
+            stationSelector.setSelectedIndex(0);
     }
 }
