@@ -189,7 +189,7 @@ public class SongImporter extends JPanel
                         newSong);
 
                 BaseAppFrame.reloadFrameContent(-1);
-                updateSongImporterComponentsOnExit();
+                updateLocalComponetsOnExit();
             }
         });
         add(acceptButton);
@@ -201,16 +201,17 @@ public class SongImporter extends JPanel
             @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
-                updateSongImporterComponentsOnExit();
+                updateLocalComponetsOnExit();
             }
         });
         add(cancelButton);
     }
 
     /**
-     * Updates the local panel components on exit
+     * Updates a local panel's components on exit
      */
-    private void updateSongImporterComponentsOnExit() {
+    @Override
+    public void updateLocalComponetsOnExit() {
         songNameField.setText(null);
         artistNameField.setText(null);
         songGenOptions.setSelectedIndex(0);

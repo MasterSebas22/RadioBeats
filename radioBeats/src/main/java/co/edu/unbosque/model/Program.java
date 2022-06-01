@@ -3,6 +3,9 @@ package co.edu.unbosque.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  *
  * @author Bryan Baron
@@ -13,14 +16,18 @@ import java.util.List;
  * @version 1.0
  *
  */
+@Data
+@NoArgsConstructor
 public class Program {
 
     private List<PlayList> programPlayListsList;
 
     /**
      * Creates a new Program instance
+     *
+     * @param creating program playlist list
      */
-    public Program() {
-        this.programPlayListsList = new ArrayList<>();
+    public Program(List<PlayList> programPlayListsList) {
+        this.programPlayListsList = programPlayListsList;
     }
 }

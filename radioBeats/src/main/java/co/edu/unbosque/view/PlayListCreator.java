@@ -195,8 +195,7 @@ public class PlayListCreator extends JPanel
             public void actionPerformed(ActionEvent evt) {
                 retriveAndCreateNewPlayList();
                 BaseAppFrame.reloadFrameContent(-1);
-                playListNameField.setText(null);
-                stationOptions.setSelectedIndex(0);
+                updateLocalComponetsOnExit();
             }
         });
         add(acceptButton);
@@ -207,6 +206,7 @@ public class PlayListCreator extends JPanel
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
+                updateLocalComponetsOnExit();
             }
         });
         add(backButton);
@@ -251,5 +251,14 @@ public class PlayListCreator extends JPanel
         BaseAppFrame.stationsList.get(stationOptions.getSelectedIndex())
             .getStationPlayListsList()
             .add(newPlayList);
+    }
+
+    /**
+     * Updates a local panel's components on exit
+     */
+    @Override
+    public void updateLocalComponetsOnExit() {
+        playListNameField.setText(null);
+        stationOptions.setSelectedIndex(0);
     }
 }

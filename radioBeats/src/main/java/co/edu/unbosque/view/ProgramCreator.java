@@ -2,12 +2,14 @@ package co.edu.unbosque.view;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -20,7 +22,11 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.model.PlayList;
+import co.edu.unbosque.model.Program;
+import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
+import co.edu.unbosque.util.RadioBeatsDataManager;
 import co.edu.unbosque.util.StringUtils;
 
 /**
@@ -101,6 +107,8 @@ public class ProgramCreator extends JPanel
                                     BaseAppFrame.stationsList.get(
                                         stationSelector.getSelectedIndex()
                                     ), stationSelector, playListsList);
+                            uptadeLocalComponentEnabledState(acceptButton,
+                                    playListsList);
                         }
                     });
                 }
@@ -153,8 +161,9 @@ public class ProgramCreator extends JPanel
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                retriveAndCreateNewProgram();
                 BaseAppFrame.reloadFrameContent(-1);
-                //TODO: Implement the other part
+                updateLocalComponetsOnExit();
             }
         });
         add(acceptButton);
@@ -165,6 +174,7 @@ public class ProgramCreator extends JPanel
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
+                updateLocalComponetsOnExit();
             }
         });
         add(backButton);
@@ -174,40 +184,44 @@ public class ProgramCreator extends JPanel
      * Retrives the necesary information to create a new program and creates it
      */
     private void retriveAndCreateNewProgram() {
-        PlayList newPlayList = new PlayList(
-                StringUtils.encodeStringUTF8(
-                    playListNameField.getText().trim())
-                );
-        List<Integer> songsSelectionsIndexes = new ArrayList<>();
-        List<Song> newPlayListSongsList = new ArrayList<>();
-        DefaultTableModel songListTableModel =
-            (DefaultTableModel) generalSongsList.getModel();
+        Program newProgram = null;
+        List<Integer> playListsSelectionsIndexes = new ArrayList<>();
+        List<PlayList> newProgramPlayListsList = new ArrayList<>();
+        DefaultTableModel playListsListTableModel =
+            (DefaultTableModel) playListsList.getModel();
 
-        for(int i = 0; i < songListTableModel.getRowCount(); i++) {
-            if((Boolean) songListTableModel.getValueAt(i, 0)) {
-                songsSelectionsIndexes.add(i);
+        for(int i = 0; i < playListsListTableModel.getRowCount(); i++) {
+            if((Boolean) playListsListTableModel.getValueAt(i, 0)) {
+                playListsSelectionsIndexes.add(i);
             }
         }
 
-        for(int i = 0; i < songsSelectionsIndexes.size(); i++) {
-            newPlayListSongsList.add(
-                    currentStationCompatibleSongs[songsSelectionsIndexes.get(i)]);
+        for(int i = 0; i < playListsSelectionsIndexes.size(); i++) {
+            newProgramPlayListsList.add(
+                    BaseAppFrame.stationsList.get(
+                        stationSelector.getSelectedIndex())
+                            .getStationPlayListsList()
+                                .get(playListsSelectionsIndexes.get(i)));
         }
-        newPlayList.setPlayListSongs(newPlayListSongsList);
+        newProgram = new Program(newProgramPlayListsList);
 
-        RadioBeatsDataManager.createDataUnit(3,
-                String.format("%s_playList_%d_%s",
+        RadioBeatsDataManager.createDataUnit(4,
+                String.format("%s_program_%s",
                     BaseAppFrame.stationsList
-                        .get(stationOptions.getSelectedIndex()).getStationName(),
-                    BaseAppFrame.stationsList
-                        .get(stationOptions.getSelectedIndex())
-                            .getStationPlayListsList().size(),
+                        .get(stationSelector.getSelectedIndex()).getStationName(),
                     DateTimeGenerator.retriveLocalDate()
                 ),
-                newPlayList);
+                newProgram);
 
-        BaseAppFrame.stationsList.get(stationOptions.getSelectedIndex())
-            .getStationPlayListsList()
-            .add(newPlayList);
+        BaseAppFrame.stationsList.get(stationSelector.getSelectedIndex())
+            .setStationProgram(newProgram);
+    }
+
+    /**
+     * Updates a local panel's components on exit
+     */
+    @Override
+    public void updateLocalComponetsOnExit() {
+        stationSelector.setSelectedIndex(0);
     }
 }

@@ -147,9 +147,7 @@ public class StationCreator extends JPanel
                             DateTimeGenerator.retriveLocalDate()), newStation);
 
                 BaseAppFrame.reloadFrameContent(-1);
-                stationNameField.setText(null);
-                transmistionModeOptions.setSelectedIndex(0);
-                stationMusicGenOptions.setSelectedIndex(0);
+                updateLocalComponetsOnExit();
             }
         });
         add(acceptButton);
@@ -160,8 +158,19 @@ public class StationCreator extends JPanel
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
+                updateLocalComponetsOnExit();
             }
         });
         add(backButton);
+    }
+
+    /**
+     * Updates a local panel's components on exit
+     */
+    @Override
+    public void updateLocalComponetsOnExit() {
+        stationNameField.setText(null);
+        transmistionModeOptions.setSelectedIndex(0);
+        stationMusicGenOptions.setSelectedIndex(0);
     }
 }

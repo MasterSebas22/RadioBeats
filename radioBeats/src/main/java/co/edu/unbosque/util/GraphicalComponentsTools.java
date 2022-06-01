@@ -152,6 +152,9 @@ public interface GraphicalComponentsTools {
             });
         }
 
+        if(station.getStationProgram() != null) table.setEnabled(false);
+        else table.setEnabled(true);
+
         table.revalidate();
     }
 
@@ -209,4 +212,9 @@ public interface GraphicalComponentsTools {
 
         return compatibleElements;
     }
+
+    /**
+     * Updates a local panel's components on exit
+     */
+    default void updateLocalComponetsOnExit() {}
 }
