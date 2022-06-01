@@ -16,7 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.StringUtils;
 
 /**
  *
@@ -63,12 +63,12 @@ public class ProgramPlayer extends JPanel
         setPreferredSize(new Dimension(515, 444));
 
         playProgramTittleLabel.setFont(new Font("sansserif", 0, 24));
-        playProgramTittleLabel.setText(StringEncoder
+        playProgramTittleLabel.setText(StringUtils
                 .encodeStringUTF8("Reproducir Programación"));
         playProgramTittleLabel.setBounds(113, 20, 310, 30);
         add(playProgramTittleLabel);
 
-        programsListLabel.setText(StringEncoder
+        programsListLabel.setText(StringUtils
 
                 .encodeStringUTF8("Lista de Programaciones"));
         programsListLabel.setBounds(184, 60, 180, 30);
@@ -140,7 +140,7 @@ public class ProgramPlayer extends JPanel
         });
         add(stopButton);
 
-        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setText(StringUtils.encodeStringUTF8("Atrás"));
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBounds(335, 362, 100, 30);
         backButton.addActionListener(new ActionListener() {

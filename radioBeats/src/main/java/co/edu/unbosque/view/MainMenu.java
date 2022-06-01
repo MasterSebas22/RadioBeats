@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.StringUtils;
 
 /**
  *
@@ -77,14 +77,17 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(2);
-                updateComboBoxElementList(
-                        BaseAppFrame.stationsList,
-                        PlayListCreator.stationOptions);
-                updateTableContent(
-                        BaseAppFrame.generalSongList,
-                        BaseAppFrame.stationsList,
-                        PlayListCreator.stationOptions,
-                        PlayListCreator.generalSongsList);
+                if(!BaseAppFrame.stationsList.isEmpty()) {
+                    updateComboBoxElementList(
+                            BaseAppFrame.stationsList,
+                            PlayListCreator.stationOptions);
+                    PlayListCreator.currentStationCompatibleSongs =
+                        updateTableContent(
+                            BaseAppFrame.generalSongList,
+                            BaseAppFrame.stationsList,
+                            PlayListCreator.stationOptions,
+                            PlayListCreator.generalSongsList);
+                }
             }
         });
         add(createPlayListButton);
@@ -99,27 +102,29 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
         });
         add(seeStationListButton);
 
-        createProgramButton.setText(StringEncoder
+        createProgramButton.setText(StringUtils
                 .encodeStringUTF8("Crear Programación"));
         createProgramButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         createProgramButton.setBounds(40, 170, 170, 50);
         createProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(4);
-                updateComboBoxElementList(
-                        BaseAppFrame.stationsList,
-                        ProgramCreator.stationSelector);
-                updateTableContent(
-                        BaseAppFrame.stationsList.get(
-                            ProgramCreator.stationSelector.getSelectedIndex()
-                        ),
-                        ProgramCreator.stationSelector,
-                        ProgramCreator.playListsList);
+                if(!BaseAppFrame.stationsList.isEmpty()) {
+                    updateComboBoxElementList(
+                            BaseAppFrame.stationsList,
+                            ProgramCreator.stationSelector);
+                    updateTableContent(
+                            BaseAppFrame.stationsList.get(
+                                ProgramCreator.stationSelector.getSelectedIndex()
+                            ),
+                            ProgramCreator.stationSelector,
+                            ProgramCreator.playListsList);
+                }
             }
         });
         add(createProgramButton);
 
-        playProgramButton.setText(StringEncoder
+        playProgramButton.setText(StringUtils
                 .encodeStringUTF8("Reproducir Programación"));
         playProgramButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         playProgramButton.setBounds(120, 230, 200, 50);

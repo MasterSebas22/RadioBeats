@@ -30,7 +30,7 @@ import co.edu.unbosque.model.Song;
 import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.RadioBeatsDataManager;
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.StringUtils;
 
 /**
  *
@@ -55,7 +55,7 @@ public class PlayListCreator extends JPanel
     private JScrollPane soundsListScrollView;
     private JButton acceptButton;
     private JButton backButton;
-    private Song[] currentStationCompatibleSongs;
+    protected static Song[] currentStationCompatibleSongs;
 
     /**
      * Creates new form PlayListCreator
@@ -128,21 +128,22 @@ public class PlayListCreator extends JPanel
         stationOptions.setModel(new DefaultComboBoxModel<>(
                     new String[] { "" }
                     ));
-
         stationOptions.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuCanceled(PopupMenuEvent e) {}
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    public void run() {
-                        currentStationCompatibleSongs =
-                            updateTableContent(BaseAppFrame.generalSongList,
-                               BaseAppFrame.stationsList,
-                               stationOptions, generalSongsList);
-                    }
-                });
+                if(!BaseAppFrame.stationsList.isEmpty()) {
+                    EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            currentStationCompatibleSongs =
+                                updateTableContent(BaseAppFrame.generalSongList,
+                                   BaseAppFrame.stationsList,
+                                   stationOptions, generalSongsList);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -155,7 +156,7 @@ public class PlayListCreator extends JPanel
             new Object [][] {},
             new String [] {
                 "#------>*", "Nombre", "Artista",
-                StringEncoder.encodeStringUTF8("Genéro")
+                StringUtils.encodeStringUTF8("Genéro")
             }
         ) {
             @Override
@@ -192,11 +193,7 @@ public class PlayListCreator extends JPanel
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                BaseAppFrame.stationsList.get(
-                        stationOptions.getSelectedIndex()
-                 ).getStationPlayListsList()
-                    .add(retriveAndCreateNewPlayList());
-
+                retriveAndCreateNewPlayList();
                 BaseAppFrame.reloadFrameContent(-1);
                 playListNameField.setText(null);
                 stationOptions.setSelectedIndex(0);
@@ -217,11 +214,12 @@ public class PlayListCreator extends JPanel
 
     /**
      * Retrives the necesary information to create a new playList and creates it
-     *
-     * @return a new PlayList instance completely created
      */
-    private PlayList retriveAndCreateNewPlayList() {
-        PlayList newPlayList = new PlayList(playListNameField.getText().trim());
+    private void retriveAndCreateNewPlayList() {
+        PlayList newPlayList = new PlayList(
+                StringUtils.encodeStringUTF8(
+                    playListNameField.getText().trim())
+                );
         List<Integer> songsSelectionsIndexes = new ArrayList<>();
         List<Song> newPlayListSongsList = new ArrayList<>();
         DefaultTableModel songListTableModel =
@@ -240,14 +238,18 @@ public class PlayListCreator extends JPanel
         newPlayList.setPlayListSongs(newPlayListSongsList);
 
         RadioBeatsDataManager.createDataUnit(3,
-                String.format("%s_playList_%s_%s",
-                    BaseAppFrame.stationsList.get(
-                            stationOptions.getSelectedIndex()
-                     ).getStationName(), DateTimeGenerator.retriveLocalDate(),
-                    DateTimeGenerator.retriveLocalTime()
+                String.format("%s_playList_%d_%s",
+                    BaseAppFrame.stationsList
+                        .get(stationOptions.getSelectedIndex()).getStationName(),
+                    BaseAppFrame.stationsList
+                        .get(stationOptions.getSelectedIndex())
+                            .getStationPlayListsList().size(),
+                    DateTimeGenerator.retriveLocalDate()
                 ),
                 newPlayList);
 
-        return newPlayList;
+        BaseAppFrame.stationsList.get(stationOptions.getSelectedIndex())
+            .getStationPlayListsList()
+            .add(newPlayList);
     }
 }

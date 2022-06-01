@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.StringUtils;
 
 /**
  *
@@ -73,8 +73,8 @@ public class StationList extends JPanel {
             },
             new String [] {
                 "Nombre",
-                StringEncoder.encodeStringUTF8("Modo de Transmisión"),
-                StringEncoder.encodeStringUTF8("Genéro")
+                StringUtils.encodeStringUTF8("Modo de Transmisión"),
+                StringUtils.encodeStringUTF8("Genéro")
             }
         ) {
             @Override
@@ -121,7 +121,7 @@ public class StationList extends JPanel {
         });
         add(deleteStationButton);
 
-        backButton.setText(StringEncoder.encodeStringUTF8("Atrás"));
+        backButton.setText(StringUtils.encodeStringUTF8("Atrás"));
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         backButton.setBounds(380, 357, 95, 30);
         backButton.addActionListener(new ActionListener() {

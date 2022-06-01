@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  * @version 1.0
  *
  */
-public class StringEncoder {
+public class StringUtils {
 
     /**
      * Encode the given string's special characters into the UTF8 standard
@@ -34,5 +34,15 @@ public class StringEncoder {
         }
 
         return  encodedString;
+    }
+
+    /**
+     * Sanitizes the special characters from the given string
+     *
+     * @param text desired string to sanitize its special characters
+     * @return the sanitized version of the original string specified
+     */
+    public static String sanitizeStringCharacters(String text) {
+         return text.replaceAll("\\W", "");
     }
 }

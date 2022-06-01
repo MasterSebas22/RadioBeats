@@ -21,7 +21,7 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.util.GraphicalComponentsTools;
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.StringUtils;
 
 /**
  *
@@ -70,7 +70,7 @@ public class ProgramCreator extends JPanel
         setPreferredSize(new Dimension(515, 510));
 
         createProgramTittleLabel.setFont(new Font("sansserif", 0, 24));
-        createProgramTittleLabel.setText(StringEncoder
+        createProgramTittleLabel.setText(StringUtils
                 .encodeStringUTF8("Crear Programación"));
         createProgramTittleLabel.setBounds(144, 20, 250, 29);
         add(createProgramTittleLabel);
@@ -94,14 +94,16 @@ public class ProgramCreator extends JPanel
 
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                EventQueue.invokeLater(new Runnable() {
-                    public void run() {
-                        updateTableContent(
-                                BaseAppFrame.stationsList.get(
-                                    stationSelector.getSelectedIndex()
-                                ), stationSelector, playListsList);
-                    }
-                });
+                if(!BaseAppFrame.stationsList.isEmpty()) {
+                    EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            updateTableContent(
+                                    BaseAppFrame.stationsList.get(
+                                        stationSelector.getSelectedIndex()
+                                    ), stationSelector, playListsList);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -166,5 +168,46 @@ public class ProgramCreator extends JPanel
             }
         });
         add(backButton);
+    }
+
+    /**
+     * Retrives the necesary information to create a new program and creates it
+     */
+    private void retriveAndCreateNewProgram() {
+        PlayList newPlayList = new PlayList(
+                StringUtils.encodeStringUTF8(
+                    playListNameField.getText().trim())
+                );
+        List<Integer> songsSelectionsIndexes = new ArrayList<>();
+        List<Song> newPlayListSongsList = new ArrayList<>();
+        DefaultTableModel songListTableModel =
+            (DefaultTableModel) generalSongsList.getModel();
+
+        for(int i = 0; i < songListTableModel.getRowCount(); i++) {
+            if((Boolean) songListTableModel.getValueAt(i, 0)) {
+                songsSelectionsIndexes.add(i);
+            }
+        }
+
+        for(int i = 0; i < songsSelectionsIndexes.size(); i++) {
+            newPlayListSongsList.add(
+                    currentStationCompatibleSongs[songsSelectionsIndexes.get(i)]);
+        }
+        newPlayList.setPlayListSongs(newPlayListSongsList);
+
+        RadioBeatsDataManager.createDataUnit(3,
+                String.format("%s_playList_%d_%s",
+                    BaseAppFrame.stationsList
+                        .get(stationOptions.getSelectedIndex()).getStationName(),
+                    BaseAppFrame.stationsList
+                        .get(stationOptions.getSelectedIndex())
+                            .getStationPlayListsList().size(),
+                    DateTimeGenerator.retriveLocalDate()
+                ),
+                newPlayList);
+
+        BaseAppFrame.stationsList.get(stationOptions.getSelectedIndex())
+            .getStationPlayListsList()
+            .add(newPlayList);
     }
 }

@@ -19,7 +19,7 @@ import co.edu.unbosque.model.dao.StationDao;
 import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.RadioBeatsDataManager;
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.StringUtils;
 
 /**
  *
@@ -78,26 +78,14 @@ public class StationCreator extends JPanel
         stationNameLabel.setBounds(95, 80, 60, 17);
         add(stationNameLabel);
 
-        stationTransmitionLabel.setText(StringEncoder
+        stationTransmitionLabel.setText(StringUtils
                 .encodeStringUTF8("Modo de Transmisión"));
         stationTransmitionLabel.setBounds(240, 80, 140, 17);
         add(stationTransmitionLabel);
 
-        stationMusicGenLabel.setText(StringEncoder.encodeStringUTF8("Género"));
+        stationMusicGenLabel.setText(StringUtils.encodeStringUTF8("Género"));
         stationMusicGenLabel.setBounds(190, 140, 50, 17);
         add(stationMusicGenLabel);
-
-        transmistionModeOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        transmistionModeOptions.setBounds(220, 100, 170, 30);
-        transmistionModeOptions.setModel(new DefaultComboBoxModel<>(
-                    new String[] { "AM", "FM", "Streaming" }
-                    ));
-        transmistionModeOptions.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
-            }
-        });
-        add(transmistionModeOptions);
 
         stationNameField.setCursor(new Cursor(Cursor.TEXT_CURSOR));
         stationNameField.setBounds(40, 100, 170, 30);
@@ -120,6 +108,14 @@ public class StationCreator extends JPanel
         });
         add(stationNameField);
 
+        transmistionModeOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        transmistionModeOptions.setBounds(220, 100, 170, 30);
+        transmistionModeOptions.setModel(new DefaultComboBoxModel<>(
+                    new String[] { "AM", "FM", "Streaming" }
+                    ));
+        add(transmistionModeOptions);
+
+
         stationMusicGenOptions.setCursor(new Cursor(Cursor.HAND_CURSOR));
         stationMusicGenOptions.setBounds(126, 160, 180, 30);
         stationMusicGenOptions.setModel(new DefaultComboBoxModel<>(
@@ -127,11 +123,6 @@ public class StationCreator extends JPanel
                         "Rock/Metal", "HipHop/Rap", "Pop", "Reaggeton",
                         "Vallenato", "Reagge", "Salsa/Merengue", "Otro" }
                     ));
-        stationMusicGenOptions.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                //
-            }
-        });
         add(stationMusicGenOptions);
 
         acceptButton.setText("Aceptar");
@@ -141,16 +132,18 @@ public class StationCreator extends JPanel
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 StationDao newStation = new StationDao(
-                            stationNameField.getText().trim(),
-                            transmistionModeOptions.getSelectedItem()
-                                .toString(),
-                            stationMusicGenOptions.getSelectedItem()
-                                .toString());
+                        StringUtils.sanitizeStringCharacters(
+                            stationNameField.getText().trim()),
+                        transmistionModeOptions.getSelectedItem()
+                            .toString(),
+                        stationMusicGenOptions.getSelectedItem()
+                            .toString());
 
                 BaseAppFrame.stationsList.add(newStation);
                 RadioBeatsDataManager.createDataUnit(2,
                         String.format("%s_%s",
-                            stationNameField.getText().trim(),
+                            StringUtils.sanitizeStringCharacters(
+                                stationNameField.getText().trim()),
                             DateTimeGenerator.retriveLocalDate()), newStation);
 
                 BaseAppFrame.reloadFrameContent(-1);

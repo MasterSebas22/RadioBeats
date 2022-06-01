@@ -19,7 +19,7 @@ import co.edu.unbosque.model.Song;
 import co.edu.unbosque.util.DateTimeGenerator;
 import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.RadioBeatsDataManager;
-import co.edu.unbosque.util.StringEncoder;
+import co.edu.unbosque.util.StringUtils;
 
 /**
  *
@@ -75,7 +75,7 @@ public class SongImporter extends JPanel
 
         songImporterTittleLabel.setFont(new Font("sansserif", 0, 24));
         songImporterTittleLabel.setBounds(113, 20, 210, 29);
-        songImporterTittleLabel.setText(StringEncoder
+        songImporterTittleLabel.setText(StringUtils
                 .encodeStringUTF8("Importar Canción"));
         add(songImporterTittleLabel);
 
@@ -87,7 +87,7 @@ public class SongImporter extends JPanel
         artistNameLabel.setBounds(278, 78, 47, 17);
         add(artistNameLabel);
 
-        songGenLabel.setText(StringEncoder.encodeStringUTF8("Género"));
+        songGenLabel.setText(StringUtils.encodeStringUTF8("Género"));
         songGenLabel.setBounds(95, 135, 47, 17);
         add(songGenLabel);
 
@@ -171,16 +171,20 @@ public class SongImporter extends JPanel
             @Override
             public void actionPerformed(ActionEvent evt) {
                 Song newSong = new Song(
-                        songNameField.getText().trim(),
-                        artistNameField.getText().trim(),
+                        StringUtils.sanitizeStringCharacters(
+                            songNameField.getText().trim()),
+                        StringUtils.sanitizeStringCharacters(
+                            artistNameField.getText().trim()),
                         songGenOptions.getSelectedItem().toString(),
                         fileSelectedPath);
 
                 BaseAppFrame.generalSongList.add(newSong);
                 RadioBeatsDataManager.createDataUnit(1,
                         String.format("%s_%s_%s",
-                            songNameField.getText().trim(),
-                            artistNameField.getText().trim(),
+                        StringUtils.sanitizeStringCharacters(
+                            songNameField.getText().trim()),
+                        StringUtils.sanitizeStringCharacters(
+                            artistNameField.getText().trim()),
                             DateTimeGenerator.retriveLocalDate()),
                         newSong);
 

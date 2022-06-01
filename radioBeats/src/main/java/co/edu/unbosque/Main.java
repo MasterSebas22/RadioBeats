@@ -1,8 +1,7 @@
 package co.edu.unbosque;
 
-import java.awt.EventQueue;
-
 import co.edu.unbosque.view.BaseAppFrame;
+import co.edu.unbosque.controller.GeneralController;
 
 /**
  *
@@ -15,14 +14,10 @@ import co.edu.unbosque.view.BaseAppFrame;
  *
  */
 public class Main {
-    private static BaseAppFrame bF = BaseAppFrame.getSingletonInstance();
+    private static GeneralController radioBeatsController =
+        new GeneralController(BaseAppFrame.getSingletonInstance());
 
     public static void main(String[] args) {
-
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                bF.setVisible(true);
-            }
-        });
+        radioBeatsController.deployAplication();
     }
 }

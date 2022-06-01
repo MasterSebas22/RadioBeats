@@ -192,7 +192,7 @@ public interface GraphicalComponentsTools {
             }
         }
 
-        if(compatibleElements.length != 0) {
+        if(compatibleElements != null) {
             tbModel = (DefaultTableModel) table.getModel();
             tbModel.setRowCount(0);
 
