@@ -150,11 +150,11 @@ public class StationList extends JPanel implements GraphicalComponentsTools {
     private void graphicStationsActions(int actionOption) {
         switch(actionOption) {
             case 1:
-                StationCreator.editionModeActivated = true;
-                StationCreator.editingStation =
+                StationManager.editionModeActivated = true;
+                StationManager.editingStation =
                     BaseAppFrame.stationsList.get(
                             stationsList.getSelectedRow());
-                StationCreator.setupStationEditionMode(1);
+                StationManager.setupStationEditionMode(1);
                 break;
             case 2:
                 RadioBeatsDataManager.deleteDataUnit(BaseAppFrame.stationsList

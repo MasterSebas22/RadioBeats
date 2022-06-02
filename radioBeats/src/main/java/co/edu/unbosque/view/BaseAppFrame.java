@@ -49,7 +49,7 @@ public class BaseAppFrame extends JFrame {
     private static JMenuBar baseFrameMenuBar;
     private static JPanel baseAppFramePanel;
     private static MainMenu mainMenu;
-    private static StationCreator stationCreator;
+    private static StationManager stationManager;
     private static PlayListCreator playListCreator;
     private static StationList stationList;
     private static ProgramCreator programCreator;
@@ -77,7 +77,7 @@ public class BaseAppFrame extends JFrame {
         closeAppOption = new JButton();
         baseAppFramePanel = null;
         mainMenu = new MainMenu();
-        stationCreator = new StationCreator();
+        stationManager = new StationManager();
         playListCreator = new PlayListCreator();
         stationList = new StationList();
         programCreator = new ProgramCreator();
@@ -159,7 +159,7 @@ public class BaseAppFrame extends JFrame {
 
         switch(panelOption) {
             case 1:
-                baseAppFramePanel = stationCreator;
+                baseAppFramePanel = stationManager;
                 break;
             case 2:
                 baseAppFramePanel = playListCreator;

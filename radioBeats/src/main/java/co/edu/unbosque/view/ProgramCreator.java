@@ -46,7 +46,7 @@ public class ProgramCreator extends JPanel
     protected static JComboBox<Object> stationSelector;
     private JScrollPane playListListScrollView;
     protected static JTable playListsList;
-    private JButton acceptButton;
+    protected JButton acceptButton;
     private JButton cancelButton;
 
     /**
@@ -212,6 +212,7 @@ public class ProgramCreator extends JPanel
      */
     @Override
     public void updateLocalComponetsOnExit() {
+        acceptButton.setEnabled(false);
         if(!BaseAppFrame.stationsList.isEmpty())
             stationSelector.setSelectedIndex(0);
     }
