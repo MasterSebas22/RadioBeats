@@ -103,7 +103,7 @@ public class StationList extends JPanel implements GraphicalComponentsTools {
         editStationButton.setEnabled(false);
         editStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                graphicStationsActions(1);
                 updateLocalComponetsOnExit();
             }
         });
@@ -115,7 +115,7 @@ public class StationList extends JPanel implements GraphicalComponentsTools {
         deleteStationButton.setEnabled(false);
         deleteStationButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                graphicStationsActions(1);
+                graphicStationsActions(2);
                 updateLocalComponetsOnExit();
             }
         });
@@ -150,15 +150,19 @@ public class StationList extends JPanel implements GraphicalComponentsTools {
     private void graphicStationsActions(int actionOption) {
         switch(actionOption) {
             case 1:
+                StationCreator.editionModeActivated = true;
+                StationCreator.editingStation =
+                    BaseAppFrame.stationsList.get(
+                            stationsList.getSelectedRow());
+                StationCreator.setupStationEditionMode(1);
+                break;
+            case 2:
                 RadioBeatsDataManager.deleteDataUnit(BaseAppFrame.stationsList
                     .get(stationsList.getSelectedRow()).getDataUnitPath());
 
                 BaseAppFrame.stationsList
                     .get(stationsList.getSelectedRow())
                     .deleteStation(BaseAppFrame.stationsList);
-                break;
-            case 2:
-
                 break;
         }
 

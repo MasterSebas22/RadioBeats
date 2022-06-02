@@ -2,6 +2,7 @@ package co.edu.unbosque.view;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,11 +39,13 @@ public class StationCreator extends JPanel
     private JLabel stationNameLabel;
     private JLabel stationTransmitionLabel;
     private JLabel stationMusicGenLabel;
-    private JTextField stationNameField;
-    private JComboBox<String> stationMusicGenOptions;
-    private JComboBox<String> transmistionModeOptions;
+    private static JTextField stationNameField;
+    private static JComboBox<String> stationMusicGenOptions;
+    private static JComboBox<String> transmistionModeOptions;
     private JButton acceptButton;
     private JButton cancelButton;
+    protected static StationDTO editingStation;
+    protected static boolean editionModeActivated;
 
     /**
      * Creates new form StationCreator
@@ -64,6 +67,8 @@ public class StationCreator extends JPanel
         stationMusicGenOptions = new JComboBox<>();
         acceptButton = new JButton();
         cancelButton = new JButton();
+        editingStation = null;
+        editionModeActivated = false;
 
         setLayout(null);
         setSize(new Dimension(433, 300));
@@ -131,8 +136,20 @@ public class StationCreator extends JPanel
         acceptButton.setEnabled(false);
         acceptButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                retriveAndCreateNewStation();
-                BaseAppFrame.reloadFrameContent(-1);
+                if(!editionModeActivated) {
+                    retriveAndCreateNewStation();
+                    BaseAppFrame.reloadFrameContent(-1);
+                } else {
+                    setupStationEditionMode(2);
+                    EventQueue.invokeLater(new Runnable() {
+                        public void run() {
+                            updateTableContent(
+                                BaseAppFrame.stationsList,
+                                StationList.stationsList);
+                        }
+                    });
+                    BaseAppFrame.reloadFrameContent(3);
+                }
                 updateLocalComponetsOnExit();
             }
         });
@@ -158,6 +175,46 @@ public class StationCreator extends JPanel
         stationNameField.setText(null);
         transmistionModeOptions.setSelectedIndex(0);
         stationMusicGenOptions.setSelectedIndex(0);
+        if(!stationMusicGenOptions.isEnabled())
+            stationMusicGenOptions.setEnabled(true);
+    }
+
+
+    /**
+     * Sets up the station cerator saloon in station edition mode
+     *
+     * @param actionOption option of the selected editing action to perform
+     */
+    protected static void setupStationEditionMode(int actionOption) {
+        stationMusicGenOptions.setEnabled(false);
+        BaseAppFrame.reloadFrameContent(1);
+        switch(actionOption) {
+            case 1:
+                stationNameField.setText(editingStation.getStationName());
+                transmistionModeOptions.setSelectedItem(
+                        (Object) editingStation.getStationTransmitionType());
+                stationMusicGenOptions.setSelectedItem(
+                        (Object) editingStation.getStationMusicGender());
+                break;
+            case 2:
+                editingStation.setStationName(
+                        StringUtils.sanitizeStringCharacters(
+                            stationNameField.getText().trim()));
+                editingStation.setStationTransmitionType(
+                        StringUtils.sanitizeStringCharacters(
+                            transmistionModeOptions.getSelectedItem()
+                            .toString()));
+                RadioBeatsDataManager.deleteDataUnit(
+                        editingStation.getDataUnitPath());
+
+                RadioBeatsDataManager.createDataUnit(2,
+                String.format("%s_%s",
+                    StringUtils.sanitizeStringCharacters(
+                        stationNameField.getText().trim()),
+                    DateTimeGenerator.retriveLocalDate()), editingStation);
+                editionModeActivated = false;
+                break;
+        }
     }
 
     /**
