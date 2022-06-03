@@ -134,15 +134,6 @@ public class StationList extends JPanel implements GraphicalComponentsTools {
     }
 
     /**
-     * Updates a local panel's components on exit
-     */
-    @Override
-    public void updateLocalComponetsOnExit() {
-        editStationButton.setEnabled(false);
-        deleteStationButton.setEnabled(false);
-    }
-
-    /**
      * Performes crud actions over the station list and represents it graphically
      *
      * @param actionOption option of the desired action to perform
@@ -170,8 +161,17 @@ public class StationList extends JPanel implements GraphicalComponentsTools {
             public void run() {
                 updateTableContent(
                     BaseAppFrame.stationsList,
-                    StationList.stationsList);
+                    StationList.stationsList, 1);
             }
         });
+    }
+
+    /**
+     * Updates a local panel's components on exit
+     */
+    @Override
+    public void updateLocalComponetsOnExit() {
+        editStationButton.setEnabled(false);
+        deleteStationButton.setEnabled(false);
     }
 }

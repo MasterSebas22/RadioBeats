@@ -36,7 +36,7 @@ public class ProgramPlayer extends JPanel
     private JScrollPane programsListScrollView;
     private JButton playButton;
     private JLabel playProgramTittleLabel;
-    private JTable programsList;
+    protected static JTable programsList;
     private JButton stopButton;
 
     /**
@@ -76,41 +76,27 @@ public class ProgramPlayer extends JPanel
 
         programsList.getTableHeader().setEnabled(false);
         programsList.setModel(new DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
+            new Object [][] {},
             new String [] {
-                "#-------->*", "Nombre de la Emisora",
+                StringUtils.encodeStringUTF8(
+                        "Emisoras con Programación"),
             }
         ) {
             @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                switch(columnIndex) {
-                    case 0:
-                      return Boolean.class;
-                    default:
-                      return String.class;
-                }
-            }
-
-            @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 0;
+                return false;
             }
         });
-        programsList.getColumnModel().getColumn(0).setPreferredWidth(1);
-        programsList.getColumnModel().getColumn(1).setPreferredWidth(300);
         programsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
         programsList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                for(int i = 0; i < 2; i++) {
-                    uptadeLocalComponentEnabledState(
-                            i == 1 ? playButton : stopButton,
-                            programsList);
+                if(programsList.getSelectedRow() == -1) {
+                    playButton.setEnabled(false);
+                    stopButton.setEnabled(false);
+                } else {
+                    playButton.setEnabled(true);
+                    stopButton.setEnabled(true);
                 }
             }
         });
@@ -120,34 +106,48 @@ public class ProgramPlayer extends JPanel
 
         playButton.setText("Reproducir");
         playButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        playButton.setBounds(75, 362, 100, 30);
+        playButton.setBounds(77, 362, 100, 30);
         playButton.setEnabled(false);
         playButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                backButton.setEnabled(false);
+                programsList.setEnabled(false);
+                //TODO: Player's play option here
             }
         });
         add(playButton);
 
         stopButton.setText("Detener");
         stopButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        stopButton.setBounds(205, 362, 100, 30);
+        stopButton.setBounds(207, 362, 100, 30);
         stopButton.setEnabled(false);
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //
+                backButton.setEnabled(true);
+                programsList.setEnabled(true);
+                //TODO: Player's stop option here
             }
         });
         add(stopButton);
 
         backButton.setText(StringUtils.encodeStringUTF8("Atrás"));
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backButton.setBounds(335, 362, 100, 30);
+        backButton.setBounds(337, 362, 100, 30);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
+                updateLocalComponetsOnExit();
             }
         });
         add(backButton);
+    }
+
+    /**
+     * Updates a local panel's components on exit
+     */
+    @Override
+    public void updateLocalComponetsOnExit() {
+        playButton.setEnabled(false);
+        stopButton.setEnabled(false);
     }
 }

@@ -134,21 +134,37 @@ public interface GraphicalComponentsTools {
      *
      * @param list basing list to make the table content update
      * @param table JTable to get updated
+     * @param updatingOption JTable's list-based updating type option
      */
     default <T extends StationDTO, U extends JTable>
-        void updateTableContent(List<StationDTO> list, U table) {
+        void updateTableContent(List<StationDTO> list, U table,
+                int updatingOption) {
         DefaultTableModel tbModel = null;
         Object[] listElementsArray = list.toArray();
+        StationDTO auxStationReference = null;
 
         tbModel = (DefaultTableModel) table.getModel();
         tbModel.setRowCount(0);
 
         for(int i = 0; i < listElementsArray.length; i++) {
-            tbModel.addRow(new Object[] {
-                ((StationDTO) listElementsArray[i]).getStationName(),
-                ((StationDTO) listElementsArray[i]).getStationTransmitionType(),
-                ((StationDTO) listElementsArray[i]).getStationMusicGender(),
-            });
+            if(updatingOption == 1) {
+                tbModel.addRow(new Object[] {
+                    ((StationDTO) listElementsArray[i])
+                        .getStationName(),
+                    ((StationDTO) listElementsArray[i])
+                        .getStationTransmitionType(),
+                    ((StationDTO) listElementsArray[i])
+                        .getStationMusicGender()
+                });
+
+            } else if(updatingOption == 2) {
+                auxStationReference = (StationDTO) listElementsArray[i];
+                if(auxStationReference.getStationProgram() != null){
+                    tbModel.addRow(new Object[] {
+                        auxStationReference.getStationName(),
+                    });
+                }
+            }
         }
 
         table.revalidate();

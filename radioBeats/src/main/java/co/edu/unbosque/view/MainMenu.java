@@ -98,7 +98,7 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
                 BaseAppFrame.reloadFrameContent(3);
                 updateTableContent(
                     BaseAppFrame.stationsList,
-                    StationList.stationsList);
+                    StationList.stationsList, 1);
             }
         });
         add(seeStationListButton);
@@ -132,6 +132,9 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
         playProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(5);
+                updateTableContent(
+                    BaseAppFrame.stationsList,
+                    ProgramPlayer.programsList, 2);
             }
         });
         add(playProgramButton);
