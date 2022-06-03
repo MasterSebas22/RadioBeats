@@ -102,9 +102,10 @@ public class RadioBeatsDataManager {
             String.format("%s/%s/%s.json",mainTargetDirPath,
                     selectedDir, name);
 
-        if(object instanceof StationDTO) {
+        if(object instanceof Song)
+            ((Song) object).setDataUnitPath(newDataUnitPath);
+        else if (object instanceof StationDTO)
             ((StationDTO) object).setDataUnitPath(newDataUnitPath);
-        };
 
         try {
             mapper.writeValue(new File(newDataUnitPath), object);
@@ -132,7 +133,7 @@ public class RadioBeatsDataManager {
      * @return a list with the deserialized game doto units Json objects retrived
      */
     public static <T> ArrayList<T> retriveDataUnitsAsObjects(Class<T> type) {
-       String selectedDir = type == Song.class
+       String selectedDir = type.equals(Song.class)
             ? TMP_SONGS_DIR_NAME
             : TMP_STATIONS_DIR_NAME;
 

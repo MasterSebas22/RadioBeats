@@ -136,10 +136,10 @@ public class StationList extends JPanel implements GraphicalComponentsTools {
     /**
      * Performes crud actions over the station list and represents it graphically
      *
-     * @param actionOption option of the desired action to perform
+     * @param crudActionOption option of the desired action to perform
      */
-    private void graphicStationsActions(int actionOption) {
-        switch(actionOption) {
+    private void graphicStationsActions(int crudActionOption) {
+        switch(crudActionOption) {
             case 1:
                 StationManager.editionModeActivated = true;
                 StationManager.editingStation =

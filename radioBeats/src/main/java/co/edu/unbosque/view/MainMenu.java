@@ -132,7 +132,7 @@ public class MainMenu extends JPanel implements GraphicalComponentsTools {
         playProgramButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(5);
-                updateTableContent(
+                ProgramPlayer.programedStationList = updateTableContent(
                     BaseAppFrame.stationsList,
                     ProgramPlayer.programsList, 2);
             }

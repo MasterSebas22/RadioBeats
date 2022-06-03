@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.EventQueue;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,6 +123,17 @@ public class BaseAppFrame extends JFrame {
 
         generalSongList = RadioBeatsDataManager
             .retriveDataUnitsAsObjects(Song.class);
+        if(!generalSongList.isEmpty()) {
+            for(int i = 0; i < generalSongList.size(); i++) {
+                File file = new File(generalSongList.get(i).getSongPath());
+                if(!file.exists()) {
+                    RadioBeatsDataManager.deleteDataUnit(
+                            generalSongList.get(i).getDataUnitPath()
+                    );
+                    generalSongList.remove(i);
+                }
+            }
+        }
         stationsList = RadioBeatsDataManager
             .retriveDataUnitsAsObjects(StationDTO.class);
 

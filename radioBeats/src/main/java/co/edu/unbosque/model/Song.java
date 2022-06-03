@@ -23,6 +23,7 @@ public class Song {
     private String songArtristName;
     private String songGender;
     private String songPath;
+    private String dataUnitPath;
 
     /**
      * Creates a new Song instance
@@ -37,5 +38,6 @@ public class Song {
         this.songArtristName = songArtristName;
         this.songGender = songGender;
         this.songPath = songPath;
+        this.dataUnitPath = null;
     }
 }

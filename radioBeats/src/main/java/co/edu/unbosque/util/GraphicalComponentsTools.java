@@ -1,5 +1,6 @@
 package co.edu.unbosque.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -135,13 +136,17 @@ public interface GraphicalComponentsTools {
      * @param list basing list to make the table content update
      * @param table JTable to get updated
      * @param updatingOption JTable's list-based updating type option
+     * @return returns the elements printed in the JTable's content
      */
     default <T extends StationDTO, U extends JTable>
-        void updateTableContent(List<StationDTO> list, U table,
+        List<StationDTO> updateTableContent(List<T> list, U table,
                 int updatingOption) {
         DefaultTableModel tbModel = null;
         Object[] listElementsArray = list.toArray();
         StationDTO auxStationReference = null;
+        List<StationDTO> validElements = updatingOption == 1
+            ? null
+            : new ArrayList<>();
 
         tbModel = (DefaultTableModel) table.getModel();
         tbModel.setRowCount(0);
@@ -160,6 +165,7 @@ public interface GraphicalComponentsTools {
             } else if(updatingOption == 2) {
                 auxStationReference = (StationDTO) listElementsArray[i];
                 if(auxStationReference.getStationProgram() != null){
+                    validElements.add(auxStationReference);
                     tbModel.addRow(new Object[] {
                         auxStationReference.getStationName(),
                     });
@@ -168,6 +174,8 @@ public interface GraphicalComponentsTools {
         }
 
         table.revalidate();
+
+        return validElements;
     }
 
     /**

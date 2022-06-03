@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,7 +16,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import co.edu.unbosque.model.dto.StationDTO;
 import co.edu.unbosque.util.GraphicalComponentsTools;
+import co.edu.unbosque.util.SongPlayer;
 import co.edu.unbosque.util.StringUtils;
 
 /**
@@ -38,6 +41,7 @@ public class ProgramPlayer extends JPanel
     private JLabel playProgramTittleLabel;
     protected static JTable programsList;
     private JButton stopButton;
+    protected static List<StationDTO> programedStationList;
 
     /**
      * Creates new form ProgramReproductor
@@ -57,6 +61,7 @@ public class ProgramPlayer extends JPanel
         playButton = new JButton();
         stopButton = new JButton();
         backButton = new JButton();
+        programedStationList = null;
 
         setLayout(null);
         setSize(new Dimension(515, 444));
@@ -112,6 +117,7 @@ public class ProgramPlayer extends JPanel
             public void actionPerformed(ActionEvent evt) {
                 backButton.setEnabled(false);
                 programsList.setEnabled(false);
+                retriveAndPerformPlayerActions();
                 //TODO: Player's play option here
             }
         });
@@ -149,5 +155,16 @@ public class ProgramPlayer extends JPanel
     public void updateLocalComponetsOnExit() {
         playButton.setEnabled(false);
         stopButton.setEnabled(false);
+    }
+
+    /**
+     * Retrives the necesary information to perform the player's play and stop
+     * actions
+     */
+    private void retriveAndPerformPlayerActions() {
+        SongPlayer.playSongList(
+                programedStationList.get(programsList.getSelectedRow())
+                .getStationPlayListsList()
+        );
     }
 }
