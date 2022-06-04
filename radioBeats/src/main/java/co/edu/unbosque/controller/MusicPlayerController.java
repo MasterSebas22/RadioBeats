@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
  *
  */
 @NoArgsConstructor
-public class GeneralController {
+public class MusicPlayerController {
 
     private BaseAppFrame baseAppFrame;
 
@@ -25,7 +25,7 @@ public class GeneralController {
      *
      * @param baseAppFrame BaseAppFrame intsance to be used
      */
-    public GeneralController(BaseAppFrame baseAppFrame) {
+    public MusicPlayerController(BaseAppFrame baseAppFrame) {
         this.baseAppFrame = baseAppFrame;
     }
 

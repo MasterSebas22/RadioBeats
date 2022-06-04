@@ -3,7 +3,8 @@ package co.edu.unbosque.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.edu.unbosque.util.RadioBeatsDataManager;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,9 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class PlayList {
 
     private String playListName;
@@ -30,11 +33,9 @@ public class PlayList {
      * Creates a new PlayList instance
      *
      * @param playListName name of the creating playList
-     * @param playListSong songs list of the creating playList
      */
     public PlayList(String playListName) {
         this.playListName = playListName;
-        this.playListSongs = RadioBeatsDataManager
-            .retriveDataUnitsAsObjects(Song.class);
+        this.playListSongs = new ArrayList<>();
     }
 }

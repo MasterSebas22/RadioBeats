@@ -1,7 +1,7 @@
 package co.edu.unbosque;
 
+import co.edu.unbosque.controller.MusicPlayerController;
 import co.edu.unbosque.view.BaseAppFrame;
-import co.edu.unbosque.controller.GeneralController;
 
 /**
  *
@@ -14,8 +14,8 @@ import co.edu.unbosque.controller.GeneralController;
  *
  */
 public class Main {
-    private static GeneralController radioBeatsController =
-        new GeneralController(BaseAppFrame.getSingletonInstance());
+    private static MusicPlayerController radioBeatsController =
+        new MusicPlayerController(BaseAppFrame.getSingletonInstance());
 
     public static void main(String[] args) {
         radioBeatsController.deployAplication();

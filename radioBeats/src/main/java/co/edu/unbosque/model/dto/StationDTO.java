@@ -6,11 +6,13 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import co.edu.unbosque.model.PlayList;
-import co.edu.unbosque.model.Program;
 import co.edu.unbosque.model.dao.StationDAO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 /**
  *
@@ -24,19 +26,21 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {
     "stationPlayListsList",
     "stationProgram"
 })
+@Builder
 public class StationDTO implements StationDAO {
 
     private String stationName;
     private String stationTransmitionType;
     private String stationMusicGender;
     private String dataUnitPath;
-    private List<PlayList> stationPlayListsList = new ArrayList<>();
-    private Program stationProgram;
+    private final List<PlayList> stationPlayListsList = new ArrayList<>();
+    private ProgramDTO stationProgram;
 
     /**
      * Creates a new StationDao instance

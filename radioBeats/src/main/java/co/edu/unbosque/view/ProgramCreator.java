@@ -23,7 +23,7 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.model.PlayList;
-import co.edu.unbosque.model.Program;
+import co.edu.unbosque.model.dto.ProgramDTO;
 import co.edu.unbosque.util.GraphicalComponentsTools;
 import co.edu.unbosque.util.StringUtils;
 
@@ -182,7 +182,7 @@ public class ProgramCreator extends JPanel
      * Retrives the necesary information to create a new program and creates it
      */
     private void retriveAndCreateNewProgram() {
-        Program newProgram = null;
+        ProgramDTO newProgram = null;
         List<Integer> playListsSelectionsIndexes = new ArrayList<>();
         List<PlayList> newProgramPlayListsList = new ArrayList<>();
         DefaultTableModel playListsListTableModel =
@@ -201,7 +201,7 @@ public class ProgramCreator extends JPanel
                             .getStationPlayListsList()
                                 .get(playListsSelectionsIndexes.get(i)));
         }
-        newProgram = new Program(newProgramPlayListsList);
+        newProgram = new ProgramDTO(newProgramPlayListsList);
 
         BaseAppFrame.stationsList.get(stationSelector.getSelectedIndex())
             .setStationProgram(newProgram);

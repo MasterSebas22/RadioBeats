@@ -30,6 +30,8 @@ public interface GraphicalComponentsTools {
      * Updates the desired component's enabled state based on a
      * JTable's column-row selection
      *
+     * @param <T> the type of the editing component
+     * @param <V> the type of the basing table to make the update
      * @param component desired component reference to get updated
      * @param table basing JTable to make the update
      */
@@ -52,6 +54,8 @@ public interface GraphicalComponentsTools {
      * Updates the desired component's enabled state based on a JTextField's
      * content
      *
+     * @param <T> the type of the editing component
+     * @param <V> the type of the basing text field to make the update
      * @param component desired component reference to get updated
      * @param textField basing JTextField to make the update
      */
@@ -66,6 +70,9 @@ public interface GraphicalComponentsTools {
      * Updates the desired component's enabled state based on a JTextField's
      * content and a JTable's column-row selection
      *
+     * @param <T> the type of the editing component
+     * @param <U> the type of the basing text field to make the update
+     * @param <V> the type of the basing table to make the update
      * @param component desired component reference to get updated
      * @param textField basing JTextField to make the update
      * @param table basing JTable to make the update
@@ -94,6 +101,9 @@ public interface GraphicalComponentsTools {
      * Updates the desired component's enabled state based on a couple
      * of JTextFields' and a String contents
      *
+     * @param <T> the type of the editing component
+     * @param <U> the type of the basing text field to make the update
+     * @param <V> the type of the basing text field to make the update
      * @param component desired component reference to get updated
      * @param textField1 first basing JTextField to make the update
      * @param textField2 second basing JTextField to make the update
@@ -118,11 +128,13 @@ public interface GraphicalComponentsTools {
     /**
      * Updates a JComboBox's elements list based on a List content
      *
+     * @param <T> the type of elements in this basing list
+     * @param <V> the type of the basing comboBox to make the update
      * @param list basing list to make the JComboBox's elements list update
      * @param comboBox JComboBox reference to get updated
      */
-    default <T extends StationDTO, U extends JComboBox<Object>>
-        void updateComboBoxElementList(List<T> list, U comboBox) {
+    default <T extends StationDTO, V extends JComboBox<Object>>
+        void updateComboBoxElementList(List<T> list, V comboBox) {
         String[] elementNames = new String[list.size()];
         for(int i = 0; i < list.size(); i++) {
             elementNames[i] = list.get(i).getStationName();
@@ -133,13 +145,15 @@ public interface GraphicalComponentsTools {
     /**
      * Updates a JTable's content based on a objects list
      *
+     * @param <T> the type of the elements in this basing list
+     * @param <V> the type of the basing table to make the update
      * @param list basing list to make the table content update
      * @param table JTable to get updated
      * @param updatingOption JTable's list-based updating type option
      * @return returns the elements printed in the JTable's content
      */
-    default <T extends StationDTO, U extends JTable>
-        List<StationDTO> updateTableContent(List<T> list, U table,
+    default <T extends StationDTO, V extends JTable>
+        List<StationDTO> updateTableContent(List<T> list, V table,
                 int updatingOption) {
         DefaultTableModel tbModel = null;
         Object[] listElementsArray = list.toArray();
@@ -182,6 +196,9 @@ public interface GraphicalComponentsTools {
      * Updates a JTable's content based on a Object's atributes and a
      * JComboBox selection
      *
+     * @param <T> the type of the basing object to make the update
+     * @param <U> the type of the basing comboBox to make the update
+     * @param <V> the type of the basing table to make the update
      * @param object basing object to make the table content update
      * @param comboBox basing JComboBox to make the table content update
      * @param table JTable to get updated
@@ -212,6 +229,10 @@ public interface GraphicalComponentsTools {
      * Updates a JTable's content based on a couple of List's contents and
      * a JComboBox element selection
      *
+     * @param <T> the type of the elements in this basing list
+     * @param <U> the type of the elements in this basing list
+     * @param <V> the type of the basing comboBox to make the update
+     * @param <W> the type of the basing table to make the update
      * @param list1 first basing list to make the table content update
      * @param list2 second basing list to make the table content update
      * @param comboBox basing JComboBox to make the table content update
@@ -253,7 +274,7 @@ public interface GraphicalComponentsTools {
                 tbModel.addRow(new Object[] {
                     false,
                     compatibleElements[i].getSongName(),
-                    compatibleElements[i].getSongArtristName(),
+                    compatibleElements[i].getSongArtistName(),
                     compatibleElements[i].getSongGender(),
                 });
             }

@@ -2,8 +2,9 @@ package co.edu.unbosque.view;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
@@ -58,7 +59,7 @@ public class BaseAppFrame extends JFrame {
     private static SongImporter songImporter;
     private static FileChooser fileChooser;
     protected static List<Song> generalSongList;
-    protected static List<StationDTO> stationsList;
+    public static List<StationDTO> stationsList;
 
 
     /**
@@ -89,6 +90,8 @@ public class BaseAppFrame extends JFrame {
         stationsList = null;
 
         setTitle("RadioBeats");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(
+            getClass().getResource("/static/image/icon/RadioBeatsIcon.png")));
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);

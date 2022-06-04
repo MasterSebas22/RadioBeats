@@ -145,7 +145,7 @@ public class StationManager extends JPanel
                         public void run() {
                             updateTableContent(
                                 BaseAppFrame.stationsList,
-                                StationList.stationsList);
+                                StationList.stationsList, 1);
                         }
                     });
                     BaseAppFrame.reloadFrameContent(3);

@@ -1,27 +1,58 @@
 plugins {
-    // Apply the application plugin to add support for building a CLI application in Java.
+    // Plugin to add support for building a CLI application in Java.
     id 'application'
+    // Plugin to generate Uml diagrams
+    id "com.github.roroche.plantuml" version "1.0.2"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    // Use gradle Plugin Portal for resolving custom plugins added.
+    gradlePluginPortal()
 }
 
 dependencies {
-    // Use JUnit test framework.
-    testImplementation 'junit:junit:4.13.2'
+    // Test frameworks
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0-M1'
 
-    //Lombok annotation processor
+    // Lombok annotation processor.
     compileOnly 'org.projectlombok:lombok:1.18.22'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    //Jackson Data binder
+    // Jackson data binder.
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
 
+    // JLayer audio manager.
+    implementation 'javazoom:jlayer:1.0.1'
 }
+
+// Main class
+String main_class = 'co.edu.unbosque.Main'
 
 application {
     // Define the main class for the application.
-    mainClass = 'co.edu.unbosque.Main'
+    mainClass = main_class
+}
+
+// Main class jar file setting.
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes(
+          'Main-Class': main_class
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+// PlantUML configurations
+classDiagram {
+    packageName = "co.edu.unbosque"
+    outputFile = project.file('/home/mrfixthis/Downloads/RadioBeatsClassDiagram.plantuml')
 }

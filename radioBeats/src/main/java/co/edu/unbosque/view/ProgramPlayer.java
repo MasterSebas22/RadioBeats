@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import co.edu.unbosque.model.dto.StationDTO;
 import co.edu.unbosque.util.GraphicalComponentsTools;
-import co.edu.unbosque.util.SongPlayer;
+import co.edu.unbosque.util.MusicPlayer;
 import co.edu.unbosque.util.StringUtils;
 
 /**
@@ -35,13 +35,14 @@ public class ProgramPlayer extends JPanel
     implements GraphicalComponentsTools {
 
     private JLabel programsListLabel;
-    private JButton backButton;
-    private JScrollPane programsListScrollView;
-    private JButton playButton;
     private JLabel playProgramTittleLabel;
-    protected static JTable programsList;
-    private JButton stopButton;
-    protected static List<StationDTO> programedStationList;
+    private JScrollPane programsListScrollView;
+    public static JTable programsList;
+    public static JButton playButton;
+    public static JButton stopButton;
+    public static JButton backButton;
+    public static JButton deleteButton;
+    public static List<StationDTO> programedStationList;
 
     /**
      * Creates new form ProgramReproductor
@@ -61,11 +62,12 @@ public class ProgramPlayer extends JPanel
         playButton = new JButton();
         stopButton = new JButton();
         backButton = new JButton();
+        deleteButton = new JButton();
         programedStationList = null;
 
         setLayout(null);
-        setSize(new Dimension(515, 444));
-        setPreferredSize(new Dimension(515, 444));
+        setSize(new Dimension(513, 444));
+        setPreferredSize(new Dimension(513, 444));
 
         playProgramTittleLabel.setFont(new Font("sansserif", 0, 24));
         playProgramTittleLabel.setText(StringUtils
@@ -99,9 +101,10 @@ public class ProgramPlayer extends JPanel
                 if(programsList.getSelectedRow() == -1) {
                     playButton.setEnabled(false);
                     stopButton.setEnabled(false);
+                    deleteButton.setEnabled(false);
                 } else {
                     playButton.setEnabled(true);
-                    stopButton.setEnabled(true);
+                    deleteButton.setEnabled(true);
                 }
             }
         });
@@ -111,34 +114,56 @@ public class ProgramPlayer extends JPanel
 
         playButton.setText("Reproducir");
         playButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        playButton.setBounds(77, 362, 100, 30);
+        playButton.setBounds(38, 362, 100, 30);
         playButton.setEnabled(false);
         playButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                deleteButton.setEnabled(false);
+                stopButton.setEnabled(true);
                 backButton.setEnabled(false);
                 programsList.setEnabled(false);
                 retriveAndPerformPlayerActions();
-                //TODO: Player's play option here
             }
         });
         add(playButton);
 
         stopButton.setText("Detener");
         stopButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        stopButton.setBounds(207, 362, 100, 30);
+        stopButton.setBounds(150, 362, 100, 30);
         stopButton.setEnabled(false);
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                stopButton.setEnabled(false);
                 backButton.setEnabled(true);
                 programsList.setEnabled(true);
-                //TODO: Player's stop option here
+                MusicPlayer.stopStationProgram();
             }
         });
         add(stopButton);
 
+        deleteButton.setText("Eliminar");
+        deleteButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        deleteButton.setBounds(261, 362, 100, 30);
+        deleteButton.setEnabled(false);
+        deleteButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                playButton.setEnabled(false);
+                deleteButton.setEnabled(false);
+                programedStationList.get(programsList.getSelectedRow())
+                    .getStationProgram()
+                    .deleteStation(
+                            programedStationList
+                            .get(programsList.getSelectedRow()));
+                programedStationList = updateTableContent(
+                    BaseAppFrame.stationsList,
+                    ProgramPlayer.programsList, 2);
+            }
+        });
+        add(deleteButton);
+
         backButton.setText(StringUtils.encodeStringUTF8("Atrás"));
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        backButton.setBounds(337, 362, 100, 30);
+        backButton.setBounds(372, 362, 100, 30);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 BaseAppFrame.reloadFrameContent(-1);
@@ -162,9 +187,7 @@ public class ProgramPlayer extends JPanel
      * actions
      */
     private void retriveAndPerformPlayerActions() {
-        SongPlayer.playSongList(
-                programedStationList.get(programsList.getSelectedRow())
-                .getStationPlayListsList()
-        );
+        MusicPlayer.playStationProgram(
+                programedStationList.get(programsList.getSelectedRow()));
     }
 }

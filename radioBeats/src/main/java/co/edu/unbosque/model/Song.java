@@ -1,5 +1,7 @@
 package co.edu.unbosque.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,11 +18,13 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Song {
 
     private String songName;
-    private String songArtristName;
+    private String songArtistName;
     private String songGender;
     private String songPath;
     private String dataUnitPath;
@@ -31,11 +35,12 @@ public class Song {
      * @param songName name of the importing song
      * @param songArtistName artist's name of the importing song
      * @param songGender music gender of the importing song
+     * @param songPath absolute path of the importing song
      */
-    public Song(String songName, String songArtristName, String songGender,
+    public Song(String songName, String songArtistName, String songGender,
             String songPath) {
         this.songName = songName;
-        this.songArtristName = songArtristName;
+        this.songArtistName = songArtistName;
         this.songGender = songGender;
         this.songPath = songPath;
         this.dataUnitPath = null;

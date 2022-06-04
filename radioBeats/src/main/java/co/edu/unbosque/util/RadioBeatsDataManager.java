@@ -129,6 +129,7 @@ public class RadioBeatsDataManager {
      * Deserializes an existent unit or group of data units Json objects
      * into a type-specified POJOs
      *
+     * @param <T> type of the deserialized POJO
      * @param type type of the POJO to get it maped from the existent Json object
      * @return a list with the deserialized game doto units Json objects retrived
      */
